@@ -97,7 +97,6 @@
             max-width: 80%;
             padding: 10px 14px;
             border-radius: 16px;
-            /* [수정] 폰트 사이즈 0.875rem(14px) -> 1rem(16px) */
             font-size: 1rem;
             line-height: 1.4;
             position: relative;
@@ -125,7 +124,6 @@
         }
     </style>
 </head>
-<!-- [수정] 기본 폰트 사이즈를 text-lg (18px)로 설정하여 16px->18px 적용 -->
 <body class="bg-[#f3f6fb] text-slate-900 dark:bg-slate-950 dark:text-slate-100 font-sans text-lg transition-colors duration-300 selection:bg-blue-500 selection:text-white">
 
     <div class="flex min-h-screen relative">
@@ -137,10 +135,8 @@
                 <div class="p-6 flex items-center justify-between border-b border-slate-100 dark:border-slate-800">
                     <div class="flex items-center space-x-2">
                         <div class="w-[48px] h-[48px] relative flex items-center justify-center">
-                            <!-- [수정] Img -> img -->
                             <img src="img/main_robot.gif" alt="Logo" class="w-full h-full object-contain">
                         </div>
-                        <!-- [수정] RoboAdvisor 텍스트 그라데이션 적용 -->
                         <span class="font-bold text-xl text-transparent bg-clip-text bg-gradient-to-br from-[#2563EB] to-sky-400 dark:text-white">RoboAdvisor</span>
                     </div>
                     <button id="mobile-menu-close" class="text-slate-500 hover:text-slate-800 dark:hover:text-white">
@@ -153,7 +149,6 @@
                     <div id="mobile-search-container" class="relative">
                         <div class="flex items-center bg-slate-100 dark:bg-slate-800 rounded-xl px-3 py-2 border border-slate-200 dark:border-slate-700">
                             <i data-lucide="search" class="text-slate-400 mr-2 w-4 h-4"></i>
-                            <!-- [수정] text-sm -> text-base (16px) -->
                             <input id="mobile-search-input" type="text" placeholder="종목, 리포트 검색..." class="bg-transparent border-none outline-none text-base w-full placeholder-slate-500 text-slate-900 dark:text-slate-100"/>
                         </div>
                         
@@ -162,18 +157,14 @@
                             <div class="p-4">
                                 <!-- Recent History -->
                                 <div class="flex justify-between items-center mb-3">
-                                    <!-- [수정] text-xs(12px) -> text-sm(14px) -->
                                     <span class="text-sm font-bold text-slate-500 dark:text-slate-400">최근 검색어</span>
-                                    <!-- [유지] "지우기"는 text-xs 유지 -->
                                     <button class="text-xs text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-colors">지우기</button>
                                 </div>
                                 <div class="flex flex-wrap gap-2 mb-4">
-                                    <!-- [수정] text-xs(12px) -> text-sm(14px) -->
                                     <div class="inline-flex items-center px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-full text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors cursor-pointer group">
                                         <span>삼성전자</span>
                                         <button class="ml-1.5 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 focus:outline-none"><i data-lucide="x" class="w-3 h-3"></i></button>
                                     </div>
-                                    <!-- [수정] text-xs(12px) -> text-sm(14px) -->
                                     <div class="inline-flex items-center px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-full text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors cursor-pointer group">
                                         <span>2차전지</span>
                                         <button class="ml-1.5 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 focus:outline-none"><i data-lucide="x" class="w-3 h-3"></i></button>
@@ -182,27 +173,21 @@
                                 
                                 <!-- Popular Stocks -->
                                 <div class="mb-3 border-t border-slate-100 dark:border-slate-800 pt-4 mt-2">
-                                    <!-- [수정] text-xs(12px) -> text-sm(14px) -->
                                     <span class="text-sm font-bold text-slate-500 dark:text-slate-400 block">실시간 인기 종목 🔥</span>
                                 </div>
                                 <ul class="space-y-1">
-                                    <!-- [수정] li의 text-sm -> text-base(16px) 로 변경하여 내부 텍스트 기본 크기 증가 -->
                                     <li class="flex items-center justify-between text-base cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50 p-2 rounded-lg group">
                                         <div class="flex items-center">
                                             <span class="w-4 text-center text-blue-500 font-bold mr-3">1</span>
-                                            <!-- [수정] text-sm -> text-base (implicit from parent) -->
                                             <span class="text-slate-700 dark:text-slate-200 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">POSCO홀딩스</span>
                                         </div>
-                                        <!-- [수정] text-xs(12px) -> text-sm(14px) -->
                                         <span class="text-sm text-red-500 flex items-center"><i data-lucide="trending-up" class="w-3 h-3 mr-1"></i>2.5%</span>
                                     </li>
-                                    <!-- [수정] li의 text-sm -> text-base(16px) -->
                                     <li class="flex items-center justify-between text-base cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50 p-2 rounded-lg group">
                                         <div class="flex items-center">
                                             <span class="w-4 text-center text-slate-500 font-bold mr-3">2</span>
                                             <span class="text-slate-700 dark:text-slate-200 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">에코프로비엠</span>
                                         </div>
-                                        <!-- [수정] text-xs(12px) -> text-sm(14px) -->
                                         <span class="text-sm text-blue-500 flex items-center"><i data-lucide="trending-down" class="w-3 h-3 mr-1"></i>-1.2%</span>
                                     </li>
                                 </ul>
@@ -216,7 +201,6 @@
                         <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
                         <span class="font-medium">대시보드</span>
                     </a>
-                    <!-- [수정] text-sm -> text-base (16px) -->
                     <a href="#" class="flex items-center space-x-3 p-3 rounded-xl text-base text-slate-500 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-white">
                         <i data-lucide="wallet" class="w-5 h-5"></i>
                         <span class="font-medium">나의 자산</span>
@@ -239,10 +223,8 @@
                     <div class="bg-gradient-to-br from-slate-100 to-white dark:from-slate-800 dark:to-slate-900 rounded-xl p-3 border border-slate-200 dark:border-slate-700">
                         <div class="flex items-center space-x-2 text-blue-600 dark:text-blue-400 mb-1">
                             <i data-lucide="zap" class="w-4 h-4"></i>
-                            <!-- [수정] text-xs -> text-sm (14px) -->
                             <span class="text-sm font-bold">AI Pro 업그레이드</span>
                         </div>
-                        <!-- [수정] text-xs -> text-sm (14px) -->
                         <button class="w-full mt-2 py-1.5 text-sm font-bold bg-blue-600 text-white rounded-lg">지금 시작하기</button>
                     </div>
                 </div>
@@ -253,18 +235,14 @@
         <aside class="hidden lg:flex flex-col w-64 border-r border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/50 backdrop-blur-xl fixed h-full z-50 transition-colors duration-300">
             <div class="p-6 flex items-center space-x-3">
                 <div class="w-[48px] h-[48px] relative flex items-center justify-center">
-                    <!-- [수정] Img -> img -->
                     <img src="img/main_robot.gif" 
                          alt="3D Logo" 
                          class="w-full h-full object-contain drop-shadow-lg hover:scale-110 transition-transform">
                 </div>
-                <!-- [수정] text-xl -> text-2xl (24px) -->
-                <!-- [수정] RoboAdvisor 텍스트 그라데이션 적용 -->
                 <span class="text-2xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-br from-[#2563EB] to-sky-400 dark:text-white">RoboAdvisor</span>
             </div>
 
             <nav class="flex-1 px-4 space-y-2 mt-4">
-                <!-- [수정] default font size increased by body text-lg, removing explicit sizes where appropriate or bumping them -->
                 <a href="#" class="flex items-center space-x-3 p-3 rounded-xl cursor-pointer transition-all bg-blue-600 text-white shadow-lg shadow-blue-600/30 dark:shadow-blue-900/50">
                     <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
                     <span class="font-medium">대시보드</span>
@@ -287,16 +265,12 @@
                 </a>
             </nav>
 
-            <!-- [수정] 하단 간격을 더 주기 위해 m-4 -> mx-4 mt-4 mb-8 로 변경 -->
             <div class="p-4 mx-4 mt-4 mb-8 bg-gradient-to-br from-slate-100 to-white dark:from-slate-800 dark:to-slate-900 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
                 <div class="flex items-center space-x-2 mb-2 text-blue-600 dark:text-blue-400">
                     <i data-lucide="zap" class="w-4 h-4"></i>
-                    <!-- [수정] text-sm -> text-base (16px) -->
                     <span class="text-base font-bold">AI Pro 플랜</span>
                 </div>
-                <!-- [수정] text-xs -> text-sm (14px) -->
                 <p class="text-sm text-slate-500 dark:text-slate-400 mb-3">더 정교한 AI 분석을 받아보세요.</p>
-                <!-- [수정] text-xs -> text-sm (14px) -->
                 <button class="w-full py-2 text-sm font-bold bg-blue-600 hover:bg-blue-500 text-white rounded-lg transition-colors shadow-md shadow-blue-500/20">
                     업그레이드
                 </button>
@@ -307,13 +281,11 @@
         <main class="flex-1 lg:ml-64 relative pb-20">
             
             <!-- Top Header -->
-            <!-- [수정] px-6 -> px-4 min-[431px]:px-6 lg:px-10 로 변경하여 하단 컨텐츠와 좌우 간격 통일 -->
             <header class="sticky top-0 z-40 flex items-center justify-between px-4 min-[431px]:px-6 lg:px-10 py-4 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800/50 transition-colors duration-300">
                 <div class="flex items-center lg:hidden">
                     <button id="mobile-menu-btn" class="text-slate-500 dark:text-slate-400 mr-4 cursor-pointer focus:outline-none">
                         <i data-lucide="menu"></i>
                     </button>
-                    <!-- [수정] RoboAdvisor 텍스트 그라데이션 적용 -->
                     <span class="font-bold text-transparent bg-clip-text bg-gradient-to-br from-[#2563EB] to-sky-400 dark:text-white">RoboAdvisor</span>
                 </div>
                 
@@ -321,7 +293,6 @@
                 <div id="desktop-search-container" class="hidden lg:flex items-center relative w-96">
                     <div class="flex items-center bg-slate-100 dark:bg-slate-800/50 rounded-full px-4 py-2 border border-slate-200 dark:border-slate-700 w-full transition-colors">
                         <i data-lucide="search" class="text-slate-400 mr-2 w-4 h-4"></i>
-                        <!-- [수정] text-sm -> text-base (16px) -->
                         <input 
                             id="desktop-search-input"
                             type="text" 
@@ -335,23 +306,18 @@
                         <div class="p-4">
                             <!-- Recent History -->
                             <div class="flex justify-between items-center mb-3">
-                                <!-- [수정] text-xs(12px) -> text-sm(14px) -->
                                 <span class="text-sm font-bold text-slate-500 dark:text-slate-400">최근 검색어</span>
-                                <!-- [유지] "지우기"는 text-xs 유지 -->
                                 <button class="text-xs text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-colors">지우기</button>
                             </div>
                             <div class="flex flex-wrap gap-2 mb-4">
-                                <!-- [수정] text-xs(12px) -> text-sm(14px) -->
                                 <div class="inline-flex items-center px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-full text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors cursor-pointer group">
                                     <span>삼성전자</span>
                                     <button class="ml-1.5 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 focus:outline-none"><i data-lucide="x" class="w-3 h-3"></i></button>
                                 </div>
-                                <!-- [수정] text-xs(12px) -> text-sm(14px) -->
                                 <div class="inline-flex items-center px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-full text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors cursor-pointer group">
                                     <span>2차전지</span>
                                     <button class="ml-1.5 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 focus:outline-none"><i data-lucide="x" class="w-3 h-3"></i></button>
                                 </div>
-                                <!-- [수정] text-xs(12px) -> text-sm(14px) -->
                                 <div class="inline-flex items-center px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-full text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors cursor-pointer group">
                                     <span>고배당주</span>
                                     <button class="ml-1.5 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 focus:outline-none"><i data-lucide="x" class="w-3 h-3"></i></button>
@@ -360,35 +326,28 @@
                             
                             <!-- Popular Stocks -->
                             <div class="mb-3 border-t border-slate-100 dark:border-slate-800 pt-4 mt-2">
-                                <!-- [수정] text-xs(12px) -> text-sm(14px) -->
                                 <span class="text-sm font-bold text-slate-500 dark:text-slate-400 block">실시간 인기 종목 🔥</span>
                             </div>
                             <ul class="space-y-1">
-                                <!-- [수정] li의 text-sm -> text-base(16px) -->
                                 <li class="flex items-center justify-between text-base cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50 p-2 rounded-lg group">
                                     <div class="flex items-center">
                                         <span class="w-4 text-center text-blue-500 font-bold mr-3">1</span>
                                         <span class="text-slate-700 dark:text-slate-200 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">POSCO홀딩스</span>
                                     </div>
-                                    <!-- [수정] text-xs(12px) -> text-sm(14px) -->
                                     <span class="text-sm text-red-500 flex items-center"><i data-lucide="trending-up" class="w-3 h-3 mr-1"></i>2.5%</span>
                                 </li>
-                                <!-- [수정] li의 text-sm -> text-base(16px) -->
                                 <li class="flex items-center justify-between text-base cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50 p-2 rounded-lg group">
                                     <div class="flex items-center">
                                         <span class="w-4 text-center text-slate-500 font-bold mr-3">2</span>
                                         <span class="text-slate-700 dark:text-slate-200 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">에코프로비엠</span>
                                     </div>
-                                    <!-- [수정] text-xs(12px) -> text-sm(14px) -->
                                     <span class="text-sm text-blue-500 flex items-center"><i data-lucide="trending-down" class="w-3 h-3 mr-1"></i>-1.2%</span>
                                 </li>
-                                <!-- [수정] li의 text-sm -> text-base(16px) -->
                                  <li class="flex items-center justify-between text-base cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50 p-2 rounded-lg group">
                                     <div class="flex items-center">
                                         <span class="w-4 text-center text-slate-500 font-bold mr-3">3</span>
                                         <span class="text-slate-700 dark:text-slate-200 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">NAVER</span>
                                     </div>
-                                    <!-- [수정] text-xs(12px) -> text-sm(14px) -->
                                     <span class="text-sm text-slate-400 flex items-center"><i data-lucide="minus" class="w-3 h-3 mr-1"></i>0.0%</span>
                                     </li>
                             </ul>
@@ -410,7 +369,6 @@
                         
                         <div id="notification-modal" class="hidden absolute top-12 right-0 w-80 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm dark:shadow-black/60 z-50 overflow-hidden origin-top-right">
                             <div class="p-4 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center bg-white dark:bg-slate-900">
-                                <!-- [수정] text-sm -> text-base (16px) -->
                                 <span class="font-bold text-slate-900 dark:text-white text-base">알림</span>
                                 <button class="text-xs text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-colors">모두 읽음</button>
                             </div>
@@ -421,7 +379,6 @@
                                             <i data-lucide="file-text" class="w-4 h-4 text-blue-600 dark:text-blue-400"></i>
                                         </div>
                                         <div>
-                                            <!-- [수정] text-sm -> text-base (16px) -->
                                             <p class="text-base text-slate-800 dark:text-slate-200 font-semibold">새로운 AI 리포트 도착</p>
                                             <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 leading-snug">회원님의 12월 포트폴리오 분석이 완료되었습니다.</p>
                                             <span class="text-[10px] text-slate-400 mt-2 block">10분 전</span>
@@ -434,7 +391,6 @@
                                             <i data-lucide="trending-up" class="w-4 h-4 text-emerald-600 dark:text-emerald-400"></i>
                                         </div>
                                         <div>
-                                            <!-- [수정] text-sm -> text-base (16px) -->
                                             <p class="text-base text-slate-800 dark:text-slate-200 font-semibold">목표 수익률 달성!</p>
                                             <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 leading-snug">관심 종목 '안랩'이 목표가 72,000원에 도달했습니다.</p>
                                             <span class="text-[10px] text-slate-400 mt-2 block">1시간 전</span>
@@ -451,25 +407,21 @@
                         <!-- Profile Menu -->
                         <div id="profile-dropdown" class="hidden absolute top-12 right-0 w-48 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm dark:shadow-black/60 z-50 overflow-hidden origin-top-right animate-fade-in">
                             <div class="p-4 border-b border-slate-100 dark:border-slate-800">
-                                <!-- [수정] text-xl (20px) 유지, mb-1 (4px) 추가하여 이메일과의 간격 확보 -->
                                 <p class="text-xl font-bold text-slate-900 dark:text-white mb-1">김철수 님</p>
                                 <p class="text-xs text-slate-500 dark:text-slate-400">user@example.com</p>
                             </div>
                             <ul class="py-1">
                                 <li>
-                                    <!-- [수정] text-sm -> text-base (16px) -->
                                     <a href="#" class="block p-4 text-base text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
                                         내 정보 수정
                                     </a>
                                 </li>
                                 <li>
-                                    <!-- [수정] text-sm -> text-base (16px) -->
                                     <a href="#" class="block p-4 text-base text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
                                         설정
                                     </a>
                                 </li>
                                 <li>
-                                    <!-- [수정] text-sm -> text-base (16px) -->
                                     <a href="#" class="block p-4 text-base text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors">
                                         로그아웃
                                     </a>
@@ -494,13 +446,11 @@
                     <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
                         <div class="text-center z-10">
                              <h1 class="text-4xl lg:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-white via-blue-100 to-sky-200 mb-6 drop-shadow-[0_0_15px_rgba(59,130,246,0.6)] tracking-tight">Your Wealth Dimension</h1>
-                            <!-- [수정] text-base lg:text-lg (16px->18px) -->
                             <p class="text-white text-base lg:text-lg font-medium tracking-wide bg-white/30 dark:bg-slate-900/30 backdrop-blur-md px-4 py-1 rounded-full inline-block border border-white/20">다각도로 분석하는 자산의 흐름</p>
                         </div>
                     </div>
                 </div>
                 <div id="hero-collapsed" class="absolute inset-0 transition-opacity duration-500 opacity-0 pointer-events-none z-20">
-                    <!-- [수정] flex-col 방식 대신 relative + absolute positioning으로 변경하여 하단 여백(bottom-6=24px)을 웹과 동일하게 강제 고정 -->
                     <div class="md:hidden h-full relative">
                         <!-- 상단 아이콘 영역: 절대 위치 top-4 left-6 -->
                         <div class="absolute top-4 left-6 flex items-center h-[30px]">
@@ -511,17 +461,13 @@
                         </div>
                         
                         <!-- 하단 정보 영역: 절대 위치 bottom-6(24px) left-6 right-6 -->
-                        <!-- 웹(데스크탑)의 p-6(24px)과 동일한 여백 확보 -->
                         <div class="absolute bottom-6 left-6 right-6 flex flex-row items-center w-full">
                             <div class="flex flex-col">
-                                <!-- [수정] mb-1 제거 및 웹과 동일한 간격 유지, text-[10px] -> text-xs(12px)로 변경 -->
                                 <span class="text-xs text-slate-500 dark:text-slate-400 whitespace-nowrap">총 자산 (Total Assets)</span>
                                 <span class="text-xl min-[431px]:text-2xl font-bold text-slate-900 dark:text-white tabular-nums whitespace-nowrap">₩ 128,450,000</span>
                             </div>
-                            <!-- [수정] 웹과 동일한 h-8 구분선 -->
                             <div class="h-8 w-px bg-slate-200 dark:bg-slate-700 mx-6"></div>
                             <div class="flex flex-col items-start">
-                                <!-- [수정] mb-1 제거 및 웹과 동일한 간격 유지, text-[10px] -> text-xs(12px)로 변경 -->
                                 <span class="text-xs text-slate-500 dark:text-slate-400 whitespace-nowrap">오늘의 수익 (Today)</span>
                                 <span class="text-xl min-[431px]:text-2xl font-bold text-emerald-500 dark:text-emerald-400 flex items-center tabular-nums whitespace-nowrap">
                                     + ₩ 1,240,000 <i data-lucide="trending-up" class="ml-1 w-4 h-4 min-[431px]:w-5 min-[431px]:h-5"></i>
@@ -555,17 +501,13 @@
             </section>
 
             <!-- 2. Dashboard Grid -->
-            <!-- [수정] p-4 -> px-4 py-6 로 변경하여 모바일 상하단 간격 24px 확보 (Hero 섹션과의 간격 증가) -->
             <div class="dashboard-container flex flex-col px-4 py-6 min-[431px]:p-6 lg:p-10 gap-6 xl:gap-10 max-w-7xl mx-auto">
                 
                 <!-- Quick Stats -->
-                <!-- [수정] xl:gap-10(40px) 제거하여 모든 구간에서 gap-6(24px) 유지 -->
                 <div id="quick-stats" class="grid grid-cols-1 md:grid-cols-3 gap-6 fade-enter">
                     <div class="bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl backdrop-blur-sm shadow-lg shadow-slate-200/50 dark:shadow-none transition-all group relative overflow-hidden h-full flex flex-col justify-between hover:border-[#2563EB]">
                         <div class="flex justify-between items-start mb-2 relative z-10">
-                            <!-- [수정] text-sm -> text-base (16px) -->
                             <span class="text-slate-500 dark:text-slate-400 text-base">총 자산</span>
-                            <!-- [수정] Img -> img -->
                             <img src="img/maininfo_01.png" 
                                  alt="3D Wallet" 
                                  class="w-14 h-14 -mt-2 -mr-2 object-contain drop-shadow-md animate-float transition-transform group-hover:scale-110">
@@ -579,9 +521,7 @@
 
                     <div class="bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl backdrop-blur-sm shadow-lg shadow-slate-200/50 dark:shadow-none transition-all group relative overflow-hidden h-full flex flex-col justify-between hover:border-[#2563EB]">
                         <div class="flex justify-between items-start mb-2 relative z-10">
-                            <!-- [수정] text-sm -> text-base (16px) -->
                             <span class="text-slate-500 dark:text-slate-400 text-base">AI 보안 점수</span>
-                            <!-- [수정] Img -> img -->
                             <img src="img/maininfo_02.png" 
                                  alt="3D Shield" 
                                  class="w-12 h-12 -mt-1 -mr-1 object-contain drop-shadow-md animate-float transition-transform group-hover:scale-110"
@@ -593,16 +533,13 @@
 
                     <div class="bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl backdrop-blur-sm shadow-lg shadow-slate-200/50 dark:shadow-none transition-all group relative overflow-hidden h-full flex flex-col justify-between hover:border-[#2563EB]">
                         <div class="flex justify-between items-start mb-2 relative z-10">
-                            <!-- [수정] text-sm -> text-base (16px) -->
                             <span class="text-slate-500 dark:text-slate-400 text-base">월간 배당금</span>
-                            <!-- [수정] Img -> img -->
                             <img src="img/maininfo_03.png" 
                                  alt="3D Card" 
                                  class="w-14 h-14 -mt-2 -mr-2 object-contain drop-shadow-md animate-float transition-transform group-hover:scale-110"
                                  style="animation-delay: 2s;">
                         </div>
                         <div class="text-2xl font-bold text-slate-900 dark:text-white mb-1 tabular-nums relative z-10">₩ 325,000</div>
-                        <!-- [수정] 자바스크립트로 날짜 업데이트를 위한 id 부여 -->
                         <div id="dividend-date" class="text-xs text-slate-500 dark:text-slate-400 relative z-10">다음 입금 예정일: -</div>
                     </div>
                 </div>
@@ -611,22 +548,19 @@
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 xl:gap-10">
                     <!-- Portfolio Chart Card -->
                     <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-lg shadow-slate-200/50 dark:shadow-none relative transition-colors duration-300 flex flex-col h-full">
-                        <!-- [수정] mb-6 (24px) -> mb-5 (20px)로 변경하여 간격 4px 줄임 -->
                         <div class="flex justify-between items-start mb-5">
                             <div>
-                                <!-- [수정] text-lg -> text-xl (20px) -->
                                 <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-1">자산 포트폴리오</h3>
-                                <!-- [수정] text-sm -> text-base (16px) -->
                                 <p class="text-base text-slate-500 dark:text-slate-400">내 자산의 분산 투자 비율</p>
                             </div>
-                            <!-- [수정] text-base (16px) -> text-sm (14px)로 변경 -->
                             <button class="text-sm font-normal text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors mt-0.5">
                                 전체 보기
                             </button>
                         </div>
                         
                         <div class="flex-1 flex flex-col justify-center gap-4">
-                            <div class="relative h-48 lg:h-56 w-full flex justify-center items-center">
+                            <!-- [수정] translate-y-1 (4px) 추가하여 모바일에서 차트 위치 하향 조정, 데스크탑(lg)은 0으로 원복 -->
+                            <div class="relative h-48 lg:h-56 w-full flex justify-center items-center translate-y-1 lg:translate-y-0">
                                 <canvas id="portfolioChart" class="relative z-10"></canvas>
                                 <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-0">
                                     <span class="text-3xl font-bold text-slate-900 dark:text-white tabular-nums">55%</span>
@@ -634,7 +568,6 @@
                                 </div>
                             </div>
                             <div class="flex justify-center items-center space-x-4 mt-5">
-                                <!-- [수정] text-xs (12px) -> text-sm (14px) 변경 -->
                                 <div class="flex items-center"><span class="w-3 h-3 rounded-full bg-blue-500 mr-2"></span><span class="text-sm text-slate-500 dark:text-slate-400">주식</span></div>
                                 <div class="flex items-center"><span class="w-3 h-3 rounded-full bg-purple-500 mr-2"></span><span class="text-sm text-slate-500 dark:text-slate-400">채권</span></div>
                                 <div class="flex items-center"><span class="w-3 h-3 rounded-full bg-emerald-500 mr-2"></span><span class="text-sm text-slate-500 dark:text-slate-400">현금</span></div>
@@ -646,12 +579,9 @@
                     <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-lg shadow-slate-200/50 dark:shadow-none transition-colors duration-300 flex flex-col h-full">
                         <div class="flex justify-between items-start mb-6">
                             <div>
-                                <!-- [수정] text-lg -> text-xl (20px) -->
                                 <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-1">월별 지출 추이</h3>
-                                <!-- [수정] text-sm -> text-base (16px) -->
                                 <p class="text-base text-slate-500 dark:text-slate-400">최근 소비 패턴 분석</p>
                             </div>
-                            <!-- [수정] text-base (16px) -> text-sm (14px)로 변경 -->
                             <button class="text-sm font-normal text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors whitespace-nowrap mt-0.5">
                                 전체 보기
                             </button>
@@ -661,7 +591,6 @@
                              <div class="h-56 w-full flex items-center justify-center"><canvas id="expenseChart"></canvas></div>
                              <div class="p-3 bg-slate-100 dark:bg-slate-800/50 rounded-lg flex items-start space-x-3 transition-colors">
                                 <div class="p-1.5 bg-emerald-500/20 rounded-md mt-0.5"><i data-lucide="trending-up" class="w-3.5 h-3.5 text-emerald-500 dark:text-emerald-400"></i></div>
-                                <!-- [수정] text-sm 유지, mb-1 (4px) 추가하여 두 텍스트 사이 간격 확보 -->
                                 <div>
                                     <p class="text-sm text-slate-700 dark:text-slate-300 mb-1">지난달 대비 지출이 <span class="text-emerald-600 dark:text-emerald-400 font-bold tabular-nums">12% 감소</span>했습니다.</p>
                                     <p class="text-xs text-slate-500">매우 훌륭한 소비 습관입니다!</p>
@@ -681,7 +610,6 @@
                             </h3>
                             <p class="text-base text-slate-500 dark:text-slate-400 mt-1">회원님의 투자 성향과 매칭되는 오늘의 추천 종목</p>
                         </div>
-                        <!-- [수정] text-base (16px) -> text-sm (14px)로 변경 -->
                         <button class="text-sm font-normal text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors whitespace-nowrap mt-0.5">
                             전체 보기
                         </button>
@@ -692,11 +620,8 @@
                             <div>
                                 <div class="flex justify-between items-start mb-3">
                                     <div class="flex items-center space-x-3">
-                                        <!-- [수정] w-10 h-10 (40px) -> w-12 h-12 (48px) 변경 -->
-                                        <!-- [수정] Img -> img -->
                                         <img src="img/stock_01.png" alt="CyberOne" class="w-12 h-12 rounded-full shadow-sm border border-slate-200 dark:border-slate-700 object-cover">
                                         <div>
-                                            <!-- [수정] text-lg -> text-base (16px) -->
                                             <h4 class="font-bold text-slate-900 dark:text-white text-base">사이버원</h4>
                                             <span class="text-xs text-slate-500 tabular-nums">356890</span>
                                         </div>
@@ -704,7 +629,6 @@
                                     <span class="text-xs font-bold px-2 py-1 rounded bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">Low Risk</span>
                                 </div>
                                 <div class="mb-3 pl-1 border-l-2 border-purple-500/30">
-                                    <!-- [수정] text-xs (12px) -> text-sm (14px) 변경 -->
                                     <p class="text-sm text-slate-500 dark:text-slate-400 line-clamp-2">
                                         <span class="text-purple-600 dark:text-purple-400 font-semibold">AI 분석:</span> 최근 공공기관 수주 증가 및 외국인 3일 연속 순매수 포착.
                                     </p>
@@ -724,11 +648,8 @@
                             <div>
                                 <div class="flex justify-between items-start mb-3">
                                     <div class="flex items-center space-x-3">
-                                        <!-- [수정] w-10 h-10 (40px) -> w-12 h-12 (48px) 변경 -->
-                                        <!-- [수정] Img -> img -->
                                         <img src="img/stock_02.png" alt="AhnLab" class="w-12 h-12 rounded-full shadow-sm border border-slate-200 dark:border-slate-700 object-cover">
                                         <div>
-                                            <!-- [수정] text-lg -> text-base (16px) -->
                                             <h4 class="font-bold text-slate-900 dark:text-white text-base">안랩</h4>
                                             <span class="text-xs text-slate-500 tabular-nums">053800</span>
                                         </div>
@@ -736,7 +657,6 @@
                                     <span class="text-xs font-bold px-2 py-1 rounded bg-orange-500/10 text-orange-600 dark:text-orange-400">Mid Risk</span>
                                 </div>
                                 <div class="mb-3 pl-1 border-l-2 border-purple-500/30">
-                                    <!-- [수정] text-xs (12px) -> text-sm (14px) 변경 -->
                                     <p class="text-sm text-slate-500 dark:text-slate-400 line-clamp-2">
                                         <span class="text-purple-600 dark:text-purple-400 font-semibold">AI 분석:</span> 모바일 보안 시장 점유율 확대, 기술적 골든크로스 근접.
                                     </p>
@@ -756,11 +676,8 @@
                             <div>
                                 <div class="flex justify-between items-start mb-3">
                                     <div class="flex items-center space-x-3">
-                                        <!-- [수정] w-10 h-10 (40px) -> w-12 h-12 (48px) 변경 -->
-                                        <!-- [수정] Img -> img -->
                                         <img src="img/stock_03.png" alt="Genians" class="w-12 h-12 rounded-full shadow-sm border border-slate-200 dark:border-slate-700 object-cover">
                                         <div>
-                                            <!-- [수정] text-lg -> text-base (16px) -->
                                             <h4 class="font-bold text-slate-900 dark:text-white text-base">지니언스</h4>
                                             <span class="text-xs text-slate-500 tabular-nums">263860</span>
                                         </div>
@@ -768,7 +685,6 @@
                                     <span class="text-xs font-bold px-2 py-1 rounded bg-red-500/10 text-red-600 dark:text-red-400">High Risk</span>
                                 </div>
                                 <div class="mb-3 pl-1 border-l-2 border-purple-500/30">
-                                    <!-- [수정] text-xs (12px) -> text-sm (14px) 변경 -->
                                     <p class="text-sm text-slate-500 dark:text-slate-400 line-clamp-2">
                                         <span class="text-purple-600 dark:text-purple-400 font-semibold">AI 분석:</span> EDR 솔루션 매출 급증 예상이나 단기 과매수 구간 진입.
                                     </p>
@@ -794,7 +710,6 @@
                             <i data-lucide="list" class="mr-2 text-blue-500 dark:text-blue-400 w-5 h-5"></i>
                             최근 거래 내역
                         </h3>
-                        <!-- [수정] text-base (16px) -> text-sm (14px)로 변경 -->
                         <button class="text-sm font-normal text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">
                             전체 보기
                         </button>
@@ -802,7 +717,6 @@
                     
                     <div class="hidden md:block overflow-x-auto">
                         <table class="w-full text-sm text-left">
-                            <!-- [수정] text-base (16px) 적용 -->
                             <thead class="bg-slate-50 dark:bg-slate-800/50 text-slate-500 dark:text-slate-400 font-medium text-base">
                                 <tr>
                                     <th class="px-6 py-4 whitespace-nowrap">거래 일시</th>
@@ -829,20 +743,16 @@
         </button>
 
         <div id="chat-window" class="fixed inset-0 m-auto md:inset-auto md:bottom-24 md:right-6 w-[90%] max-w-sm md:w-96 h-[500px] bg-white dark:bg-slate-900 rounded-2xl shadow-sm dark:shadow-black/80 border border-slate-200 dark:border-slate-800 z-50 hidden flex flex-col overflow-hidden animate-slide-up">
-            <!-- [수정] items-center -> items-start 로 변경하여 상단 정렬 -->
             <div class="p-4 bg-slate-50 dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 flex justify-between items-start">
                 <div class="flex items-center space-x-3">
-                    <!-- [수정] 헤더 프로필 아이콘 사이즈 48px(w-12) 유지 -->
                     <div class="w-12 h-12 bg-gradient-to-tr from-blue-500 to-purple-500 rounded-full flex items-center justify-center">
                         <i data-lucide="bot" class="text-white w-6 h-6"></i>
                     </div>
                     <div>
-                        <!-- [수정] text-sm -> text-base (16px) 유지 -->
                         <h4 class="font-bold text-base text-slate-900 dark:text-white">AI 자산 비서</h4>
                         <span class="text-xs text-emerald-500 flex items-center"><span class="w-1.5 h-1.5 bg-emerald-500 rounded-full mr-1"></span>온라인</span>
                     </div>
                 </div>
-                <!-- [수정] mt-1 추가하여 타이틀 텍스트와 높이 맞춤 -->
                 <button id="close-chat" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 mt-1">
                     <i data-lucide="x" class="w-5 h-5"></i>
                 </button>
@@ -850,7 +760,6 @@
             <div id="chat-messages" class="flex-1 overflow-y-auto p-4 space-y-4 bg-white dark:bg-slate-900">
                 <!-- Initial Greeting -->
                 <div class="flex items-start space-x-2">
-                    <!-- [수정] 채팅창 내부 프로필 아이콘 사이즈 32px(w-8) -> 40px(w-10) 로 변경 -->
                     <div class="w-10 h-10 bg-slate-200 dark:bg-slate-700 rounded-full flex items-center justify-center flex-shrink-0">
                         <i data-lucide="bot" class="w-5 h-5 text-slate-500 dark:text-slate-400"></i>
                     </div>
@@ -861,7 +770,6 @@
             </div>
             <div class="p-3 bg-slate-50 dark:bg-slate-800 border-t border-slate-200 dark:border-slate-700">
                 <div class="flex space-x-2">
-                    <!-- [수정] text-sm -> text-base (16px) -->
                     <input id="chat-input" type="text" placeholder="메시지를 입력하세요..." class="flex-1 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white text-base rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" onkeypress="if(event.key === 'Enter') sendMessage()">
                     <button onclick="sendMessage()" class="bg-blue-600 hover:bg-blue-500 text-white rounded-lg px-3 py-2 transition-colors">
                         <i data-lucide="send" class="w-4 h-4"></i>
@@ -935,18 +843,13 @@
         if(transactionList) {
             transactionList.innerHTML = transactions.map(t => `
                 <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
-                    <!-- [수정] text-lg -> text-base (16px)로 변경 -->
                     <td class="px-6 py-4 text-slate-600 dark:text-slate-400 text-base tabular-nums whitespace-nowrap">${t.date}</td>
                     <td class="px-6 py-4 whitespace-nowrap">
-                        <!-- [수정] text-base -> text-xs (12px)로 변경 -->
                         <span class="px-2 py-1 rounded text-xs font-bold ${t.typeClass}">${t.type}</span>
                     </td>
-                    <!-- [수정] text-lg -> text-base (16px)로 변경 -->
                     <td class="px-6 py-4 font-medium text-base text-slate-900 dark:text-white whitespace-nowrap">${t.title}</td>
-                    <!-- [수정] text-lg -> text-base (16px)로 변경 -->
                     <td class="px-6 py-4 text-right font-bold text-base text-slate-900 dark:text-white tabular-nums whitespace-nowrap">${t.amount}</td>
                     <td class="px-6 py-4 text-center whitespace-nowrap">
-                        <!-- [수정] text-base (16px) -> text-sm (14px)로 변경 -->
                         <span class="flex items-center justify-center text-sm text-emerald-500 dark:text-emerald-400 font-bold">
                             <i data-lucide="check-circle-2" class="w-3.5 h-3.5 mr-1"></i> 완료
                         </span>
@@ -961,18 +864,13 @@
             transactionListMobile.innerHTML = transactions.map(t => `
                 <div class="flex flex-col p-4 bg-slate-50 dark:bg-slate-800/30 rounded-2xl">
                     <div class="flex justify-between items-center mb-2">
-                        <!-- [수정] text-base (16px) -> text-sm (14px)로 변경 -->
                         <span class="text-sm text-slate-500 dark:text-slate-400">${t.date}</span>
-                        <!-- [수정] text-base -> text-xs (12px)로 변경 -->
                         <span class="px-2 py-1 rounded text-xs font-bold ${t.typeClass}">${t.type}</span>
                     </div>
                     <div class="flex justify-between items-start">
-                        <!-- [수정] text-lg -> text-base (16px) -->
                         <span class="font-bold text-slate-900 dark:text-white text-base">${t.title}</span>
                         <div class="text-right">
-                            <!-- [수정] text-lg -> text-base (16px) -->
                             <span class="block font-bold text-slate-900 dark:text-white text-base tabular-nums">${t.amount}</span>
-                            <!-- [수정] text-base (16px) -> text-sm (14px)로 변경 -->
                             <span class="flex items-center justify-end text-sm text-emerald-500 dark:text-emerald-400 font-bold mt-3"><i data-lucide="check-circle-2" class="w-3 h-3 mr-1"></i> 완료</span>
                         </div>
                     </div>
@@ -1236,7 +1134,6 @@
             div.className = `flex items-start space-x-2 ${sender === 'user' ? 'justify-end' : ''}`;
             let content = '';
             if (sender === 'ai') {
-                // [수정] 동적 메시지 프로필 아이콘 사이즈 32px(w-8) -> 40px(w-10) 로 변경
                 content = `<div class="w-10 h-10 bg-slate-200 dark:bg-slate-700 rounded-full flex items-center justify-center flex-shrink-0"><i data-lucide="bot" class="w-5 h-5 text-slate-500 dark:text-slate-400"></i></div><div class="chat-bubble chat-ai slide-up">${text}</div>`;
             } else {
                 content = `<div class="chat-bubble chat-user slide-up">${text}</div>`;
@@ -1251,7 +1148,6 @@
             const div = document.createElement('div');
             div.id = 'typing-indicator';
             div.className = 'flex items-start space-x-2';
-            // [수정] 타이핑 인디케이터 프로필 아이콘 사이즈 32px(w-8) -> 40px(w-10) 로 변경
             div.innerHTML = `<div class="w-10 h-10 bg-slate-200 dark:bg-slate-700 rounded-full flex items-center justify-center flex-shrink-0"><i data-lucide="bot" class="w-5 h-5 text-slate-500 dark:text-slate-400"></i></div><div class="chat-bubble chat-ai flex space-x-1 items-center"><div class="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce"></div><div class="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" style="animation-delay: 0.1s"></div><div class="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" style="animation-delay: 0.2s"></div></div>`;
             chatMessages.appendChild(div);
             lucide.createIcons();
