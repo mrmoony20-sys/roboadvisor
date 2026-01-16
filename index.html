@@ -514,15 +514,15 @@
                         <!-- 웹(데스크탑)의 p-6(24px)과 동일한 여백 확보 -->
                         <div class="absolute bottom-6 left-6 right-6 flex flex-row items-center w-full">
                             <div class="flex flex-col">
-                                <!-- [수정] mb-1 제거 및 웹과 동일한 간격 유지 -->
-                                <span class="text-[10px] text-slate-500 dark:text-slate-400 whitespace-nowrap">총 자산 (Total Assets)</span>
+                                <!-- [수정] mb-1 제거 및 웹과 동일한 간격 유지, text-[10px] -> text-xs(12px)로 변경 -->
+                                <span class="text-xs text-slate-500 dark:text-slate-400 whitespace-nowrap">총 자산 (Total Assets)</span>
                                 <span class="text-xl min-[431px]:text-2xl font-bold text-slate-900 dark:text-white tabular-nums whitespace-nowrap">₩ 128,450,000</span>
                             </div>
                             <!-- [수정] 웹과 동일한 h-8 구분선 -->
                             <div class="h-8 w-px bg-slate-200 dark:bg-slate-700 mx-6"></div>
                             <div class="flex flex-col items-start">
-                                <!-- [수정] mb-1 제거 및 웹과 동일한 간격 유지 -->
-                                <span class="text-[10px] text-slate-500 dark:text-slate-400 whitespace-nowrap">오늘의 수익 (Today)</span>
+                                <!-- [수정] mb-1 제거 및 웹과 동일한 간격 유지, text-[10px] -> text-xs(12px)로 변경 -->
+                                <span class="text-xs text-slate-500 dark:text-slate-400 whitespace-nowrap">오늘의 수익 (Today)</span>
                                 <span class="text-xl min-[431px]:text-2xl font-bold text-emerald-500 dark:text-emerald-400 flex items-center tabular-nums whitespace-nowrap">
                                     + ₩ 1,240,000 <i data-lucide="trending-up" class="ml-1 w-4 h-4 min-[431px]:w-5 min-[431px]:h-5"></i>
                                 </span>
@@ -660,8 +660,11 @@
                              <div class="h-56 w-full flex items-center justify-center"><canvas id="expenseChart"></canvas></div>
                              <div class="p-3 bg-slate-100 dark:bg-slate-800/50 rounded-lg flex items-start space-x-3 transition-colors">
                                 <div class="p-1.5 bg-emerald-500/20 rounded-md mt-0.5"><i data-lucide="trending-up" class="w-3.5 h-3.5 text-emerald-500 dark:text-emerald-400"></i></div>
-                                <!-- [수정] text-base (16px) -> text-sm (14px)로 변경 -->
-                                <div><p class="text-sm text-slate-700 dark:text-slate-300">지난달 대비 지출이 <span class="text-emerald-600 dark:text-emerald-400 font-bold tabular-nums">12% 감소</span>했습니다.</p><p class="text-xs text-slate-500">매우 훌륭한 소비 습관입니다!</p></div>
+                                <!-- [수정] text-sm 유지, mb-1 (4px) 추가하여 두 텍스트 사이 간격 확보 -->
+                                <div>
+                                    <p class="text-sm text-slate-700 dark:text-slate-300 mb-1">지난달 대비 지출이 <span class="text-emerald-600 dark:text-emerald-400 font-bold tabular-nums">12% 감소</span>했습니다.</p>
+                                    <p class="text-xs text-slate-500">매우 훌륭한 소비 습관입니다!</p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -957,8 +960,8 @@
             transactionListMobile.innerHTML = transactions.map(t => `
                 <div class="flex flex-col p-4 bg-slate-50 dark:bg-slate-800/30 rounded-2xl">
                     <div class="flex justify-between items-center mb-2">
-                        <!-- [수정] text-xs -> text-base (16px) -->
-                        <span class="text-base text-slate-500 dark:text-slate-400">${t.date}</span>
+                        <!-- [수정] text-base (16px) -> text-sm (14px)로 변경 -->
+                        <span class="text-sm text-slate-500 dark:text-slate-400">${t.date}</span>
                         <!-- [수정] text-base -> text-xs (12px)로 변경 -->
                         <span class="px-2 py-1 rounded text-xs font-bold ${t.typeClass}">${t.type}</span>
                     </div>
