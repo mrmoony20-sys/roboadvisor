@@ -367,7 +367,8 @@
                             <span class="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border border-white dark:border-slate-950"></span>
                         </button>
                         
-                        <div id="notification-modal" class="hidden absolute top-12 right-0 w-80 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm dark:shadow-black/60 z-50 overflow-hidden origin-top-right">
+                        <!-- [수정] 모바일에서 프로필 드롭다운과 위치를 맞추기 위해 -right-12 (-48px) 적용, 데스크탑(md 이상)에서는 right-0 복귀 -->
+                        <div id="notification-modal" class="hidden absolute top-12 -right-12 md:right-0 w-80 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm dark:shadow-black/60 z-50 overflow-hidden origin-top-right">
                             <div class="p-4 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center bg-white dark:bg-slate-900">
                                 <span class="font-bold text-slate-900 dark:text-white text-base">알림</span>
                                 <button class="text-xs text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-colors">모두 읽음</button>
