@@ -1,0 +1,1236 @@
+<!DOCTYPE html>
+<html lang="ko" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI RoboAdvisor Dashboard (Collapsed)</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        slate: {
+                            850: '#1f2937', 
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Pretendard', 'ui-sans-serif', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif'],
+                        mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'Liberation Mono', 'Courier New', 'monospace'],
+                    },
+                    animation: {
+                        'slide-up': 'slideUp 0.3s ease-out forwards',
+                        'bounce-slow': 'bounce 3s infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'slide-in-left': 'slideInLeft 0.3s ease-out forwards',
+                        'fade-in': 'fadeIn 0.2s ease-out forwards',
+                    },
+                    keyframes: {
+                        slideUp: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        },
+                        slideInLeft: {
+                            '0%': { transform: 'translateX(-100%)' },
+                            '100%': { transform: 'translateX(0)' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        fadeIn: {
+                            '0%': { opacity: '0', transform: 'scale(0.95)' },
+                            '100%': { opacity: '1', transform: 'scale(1)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Spline Viewer -->
+    <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.59/build/spline-viewer.js"></script>
+
+    <style>
+        /* 커스텀 스크롤바 */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+        .dark ::-webkit-scrollbar-thumb {
+            background: #475569;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        
+        .modal-enter {
+            opacity: 0;
+            transform: scale(0.95);
+            animation: modalIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        @keyframes modalIn {
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .tabular-nums {
+            font-variant-numeric: tabular-nums;
+            letter-spacing: -0.02em;
+        }
+
+        .chat-bubble {
+            max-width: 80%;
+            padding: 10px 14px;
+            border-radius: 16px;
+            font-size: 1rem;
+            line-height: 1.4;
+            position: relative;
+            word-wrap: break-word;
+        }
+        .chat-user {
+            background-color: #3b82f6;
+            color: white;
+            border-bottom-right-radius: 4px;
+            margin-left: auto;
+        }
+        .chat-ai {
+            background-color: #f1f5f9;
+            color: #1e293b;
+            border-bottom-left-radius: 4px;
+        }
+        .dark .chat-ai {
+            background-color: #334155;
+            color: #f1f5f9;
+        }
+        
+        .mobile-menu-overlay {
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+        }
+    </style>
+</head>
+<body class="bg-[#f3f6fb] text-slate-900 dark:bg-slate-950 dark:text-slate-100 font-sans text-lg transition-colors duration-300 selection:bg-blue-500 selection:text-white">
+
+    <div class="flex min-h-screen relative">
+        
+        <!-- Mobile Menu Drawer -->
+        <div id="mobile-menu-container" class="fixed inset-0 z-[60] hidden">
+            <div id="mobile-menu-backdrop" class="absolute inset-0 mobile-menu-overlay transition-opacity"></div>
+            <div class="absolute inset-y-0 left-0 w-64 bg-white dark:bg-slate-900 shadow-2xl animate-slide-in-left flex flex-col">
+                <div class="p-6 flex items-center justify-between border-b border-slate-100 dark:border-slate-800">
+                    <div class="flex items-center space-x-2">
+                        <div class="w-[48px] h-[48px] relative flex items-center justify-center">
+                            <img src="img/main_robot.gif" alt="Logo" class="w-full h-full object-contain">
+                        </div>
+                        <span class="font-bold text-xl text-transparent bg-clip-text bg-gradient-to-br from-[#2563EB] to-sky-400 dark:text-white">RoboAdvisor</span>
+                    </div>
+                    <button id="mobile-menu-close" class="text-slate-500 hover:text-slate-800 dark:hover:text-white">
+                        <i data-lucide="x" class="w-6 h-6"></i>
+                    </button>
+                </div>
+
+                <div class="p-4 relative">
+                    <!-- [Mobile] Search Input Container -->
+                    <div id="mobile-search-container" class="relative">
+                        <div class="flex items-center bg-slate-100 dark:bg-slate-800 rounded-xl px-3 py-2 border border-slate-200 dark:border-slate-700">
+                            <i data-lucide="search" class="text-slate-400 mr-2 w-4 h-4"></i>
+                            <input id="mobile-search-input" type="text" placeholder="종목, 리포트 검색..." class="bg-transparent border-none outline-none text-base w-full placeholder-slate-500 text-slate-900 dark:text-slate-100"/>
+                        </div>
+                        
+                        <!-- [Mobile] Search Dropdown -->
+                        <div id="mobile-search-dropdown" class="absolute top-full left-0 w-full mt-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl shadow-sm dark:shadow-black/60 z-20 hidden overflow-hidden">
+                            <div class="p-4">
+                                <!-- Recent History -->
+                                <div class="flex justify-between items-center mb-3">
+                                    <span class="text-sm font-bold text-slate-500 dark:text-slate-400">최근 검색어</span>
+                                    <button class="text-xs text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-colors">지우기</button>
+                                </div>
+                                <div class="flex flex-wrap gap-2 mb-4">
+                                    <div class="inline-flex items-center px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-full text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors cursor-pointer group">
+                                        <span>삼성전자</span>
+                                        <button class="ml-1.5 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 focus:outline-none"><i data-lucide="x" class="w-3 h-3"></i></button>
+                                    </div>
+                                    <div class="inline-flex items-center px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-full text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors cursor-pointer group">
+                                        <span>2차전지</span>
+                                        <button class="ml-1.5 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 focus:outline-none"><i data-lucide="x" class="w-3 h-3"></i></button>
+                                    </div>
+                                </div>
+                                
+                                <!-- Popular Stocks -->
+                                <div class="mb-3 border-t border-slate-100 dark:border-slate-800 pt-4 mt-2">
+                                    <span class="text-sm font-bold text-slate-500 dark:text-slate-400 block">실시간 인기 종목 🔥</span>
+                                </div>
+                                <ul class="space-y-1">
+                                    <li class="flex items-center justify-between text-base cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50 p-2 rounded-lg group">
+                                        <div class="flex items-center">
+                                            <span class="w-4 text-center text-blue-500 font-bold mr-3">1</span>
+                                            <span class="text-slate-700 dark:text-slate-200 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">POSCO홀딩스</span>
+                                        </div>
+                                        <span class="text-sm text-red-500 flex items-center"><i data-lucide="trending-up" class="w-3 h-3 mr-1"></i>2.5%</span>
+                                    </li>
+                                    <li class="flex items-center justify-between text-base cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50 p-2 rounded-lg group">
+                                        <div class="flex items-center">
+                                            <span class="w-4 text-center text-slate-500 font-bold mr-3">2</span>
+                                            <span class="text-slate-700 dark:text-slate-200 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">에코프로비엠</span>
+                                        </div>
+                                        <span class="text-sm text-blue-500 flex items-center"><i data-lucide="trending-down" class="w-3 h-3 mr-1"></i>-1.2%</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <nav class="flex-1 px-4 space-y-2 overflow-y-auto">
+                    <a href="#" class="flex items-center space-x-3 p-3 rounded-xl bg-blue-600 text-white">
+                        <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+                        <span class="font-medium">대시보드</span>
+                    </a>
+                    <a href="#" class="flex items-center space-x-3 p-3 rounded-xl text-base text-slate-500 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-white">
+                        <i data-lucide="wallet" class="w-5 h-5"></i>
+                        <span class="font-medium">나의 자산</span>
+                    </a>
+                    <a href="#" class="flex items-center space-x-3 p-3 rounded-xl text-base text-slate-500 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-white">
+                        <i data-lucide="pie-chart" class="w-5 h-5"></i>
+                        <span class="font-medium">투자 분석</span>
+                    </a>
+                    <a href="#" class="flex items-center space-x-3 p-3 rounded-xl text-base text-slate-500 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-white">
+                        <i data-lucide="shield-check" class="w-5 h-5"></i>
+                        <span class="font-medium">보안 리포트</span>
+                    </a>
+                    <a href="#" class="flex items-center space-x-3 p-3 rounded-xl text-base text-slate-500 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-white">
+                        <i data-lucide="settings" class="w-5 h-5"></i>
+                        <span class="font-medium">설정</span>
+                    </a>
+                </nav>
+
+                <div class="p-4 border-t border-slate-100 dark:border-slate-800">
+                    <div class="bg-gradient-to-br from-slate-100 to-white dark:from-slate-800 dark:to-slate-900 rounded-xl p-3 border border-slate-200 dark:border-slate-700">
+                        <div class="flex items-center space-x-2 text-blue-600 dark:text-blue-400 mb-1">
+                            <i data-lucide="zap" class="w-4 h-4"></i>
+                            <span class="text-sm font-bold">AI Pro 업그레이드</span>
+                        </div>
+                        <button class="w-full mt-2 py-1.5 text-sm font-bold bg-blue-600 text-white rounded-lg">지금 시작하기</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Desktop Sidebar -->
+        <aside class="hidden lg:flex flex-col w-64 border-r border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/50 backdrop-blur-xl fixed h-full z-50 transition-colors duration-300">
+            <div class="p-6 flex items-center space-x-3">
+                <div class="w-[48px] h-[48px] relative flex items-center justify-center">
+                    <img src="img/main_robot.gif" 
+                         alt="3D Logo" 
+                         class="w-full h-full object-contain drop-shadow-lg hover:scale-110 transition-transform">
+                </div>
+                <span class="text-2xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-br from-[#2563EB] to-sky-400 dark:text-white">RoboAdvisor</span>
+            </div>
+
+            <nav class="flex-1 px-4 space-y-2 mt-4">
+                <a href="#" class="flex items-center space-x-3 p-3 rounded-xl cursor-pointer transition-all bg-blue-600 text-white shadow-lg shadow-blue-600/30 dark:shadow-blue-900/50">
+                    <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+                    <span class="font-medium">대시보드</span>
+                </a>
+                <a href="#" class="flex items-center space-x-3 p-3 rounded-xl cursor-pointer transition-all text-slate-500 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-white">
+                    <i data-lucide="wallet" class="w-5 h-5"></i>
+                    <span class="font-medium">나의 자산</span>
+                </a>
+                <a href="#" class="flex items-center space-x-3 p-3 rounded-xl cursor-pointer transition-all text-slate-500 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-white">
+                    <i data-lucide="pie-chart" class="w-5 h-5"></i>
+                    <span class="font-medium">투자 분석</span>
+                </a>
+                <a href="#" class="flex items-center space-x-3 p-3 rounded-xl cursor-pointer transition-all text-slate-500 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-white">
+                    <i data-lucide="shield-check" class="w-5 h-5"></i>
+                    <span class="font-medium">보안 리포트</span>
+                </a>
+                <a href="#" class="flex items-center space-x-3 p-3 rounded-xl cursor-pointer transition-all text-slate-500 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-white">
+                    <i data-lucide="settings" class="w-5 h-5"></i>
+                    <span class="font-medium">설정</span>
+                </a>
+            </nav>
+
+            <div class="p-4 mx-4 mt-4 mb-8 bg-gradient-to-br from-slate-100 to-white dark:from-slate-800 dark:to-slate-900 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                <div class="flex items-center space-x-2 mb-2 text-blue-600 dark:text-blue-400">
+                    <i data-lucide="zap" class="w-4 h-4"></i>
+                    <span class="text-base font-bold">AI Pro 플랜</span>
+                </div>
+                <p class="text-sm text-slate-500 dark:text-slate-400 mb-3">더 정교한 AI 분석을 받아보세요.</p>
+                <button class="w-full py-2 text-sm font-bold bg-blue-600 hover:bg-blue-500 text-white rounded-lg transition-colors shadow-md shadow-blue-500/20">
+                    업그레이드
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 lg:ml-64 relative pb-20">
+            
+            <!-- Top Header -->
+            <header class="sticky top-0 z-40 flex items-center justify-between px-4 min-[431px]:px-6 lg:px-10 py-4 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800/50 transition-colors duration-300">
+                <div class="flex items-center lg:hidden">
+                    <button id="mobile-menu-btn" class="text-slate-500 dark:text-slate-400 mr-4 cursor-pointer focus:outline-none">
+                        <i data-lucide="menu"></i>
+                    </button>
+                    <span class="font-bold text-transparent bg-clip-text bg-gradient-to-br from-[#2563EB] to-sky-400 dark:text-white">RoboAdvisor</span>
+                </div>
+                
+                <!-- [Desktop] Search Container (Relative for Dropdown) -->
+                <div id="desktop-search-container" class="hidden lg:flex items-center relative w-96">
+                    <div class="flex items-center bg-slate-100 dark:bg-slate-800/50 rounded-full px-4 py-2 border border-slate-200 dark:border-slate-700 w-full transition-colors">
+                        <i data-lucide="search" class="text-slate-400 mr-2 w-4 h-4"></i>
+                        <input 
+                            id="desktop-search-input"
+                            type="text" 
+                            placeholder="종목, 리포트 검색..." 
+                            class="bg-transparent border-none outline-none text-base w-full placeholder-slate-500 text-slate-900 dark:text-slate-100"
+                        />
+                    </div>
+
+                    <!-- [Desktop] Search Dropdown -->
+                    <div id="desktop-search-dropdown" class="absolute top-full left-0 w-full mt-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm dark:shadow-black/60 z-50 hidden overflow-hidden animate-fade-in">
+                        <div class="p-4">
+                            <!-- Recent History -->
+                            <div class="flex justify-between items-center mb-3">
+                                <span class="text-sm font-bold text-slate-500 dark:text-slate-400">최근 검색어</span>
+                                <button class="text-xs text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-colors">지우기</button>
+                            </div>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <div class="inline-flex items-center px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-full text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors cursor-pointer group">
+                                    <span>삼성전자</span>
+                                    <button class="ml-1.5 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 focus:outline-none"><i data-lucide="x" class="w-3 h-3"></i></button>
+                                </div>
+                                <div class="inline-flex items-center px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-full text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors cursor-pointer group">
+                                    <span>2차전지</span>
+                                    <button class="ml-1.5 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 focus:outline-none"><i data-lucide="x" class="w-3 h-3"></i></button>
+                                </div>
+                                <div class="inline-flex items-center px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-full text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors cursor-pointer group">
+                                    <span>고배당주</span>
+                                    <button class="ml-1.5 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 focus:outline-none"><i data-lucide="x" class="w-3 h-3"></i></button>
+                                </div>
+                            </div>
+                            
+                            <!-- Popular Stocks -->
+                            <div class="mb-3 border-t border-slate-100 dark:border-slate-800 pt-4 mt-2">
+                                <span class="text-sm font-bold text-slate-500 dark:text-slate-400 block">실시간 인기 종목 🔥</span>
+                            </div>
+                            <ul class="space-y-1">
+                                <li class="flex items-center justify-between text-base cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50 p-2 rounded-lg group">
+                                    <div class="flex items-center">
+                                        <span class="w-4 text-center text-blue-500 font-bold mr-3">1</span>
+                                        <span class="text-slate-700 dark:text-slate-200 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">POSCO홀딩스</span>
+                                    </div>
+                                    <span class="text-sm text-red-500 flex items-center"><i data-lucide="trending-up" class="w-3 h-3 mr-1"></i>2.5%</span>
+                                </li>
+                                <li class="flex items-center justify-between text-base cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50 p-2 rounded-lg group">
+                                    <div class="flex items-center">
+                                        <span class="w-4 text-center text-slate-500 font-bold mr-3">2</span>
+                                        <span class="text-slate-700 dark:text-slate-200 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">에코프로비엠</span>
+                                    </div>
+                                    <span class="text-sm text-blue-500 flex items-center"><i data-lucide="trending-down" class="w-3 h-3 mr-1"></i>-1.2%</span>
+                                </li>
+                                 <li class="flex items-center justify-between text-base cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50 p-2 rounded-lg group">
+                                    <div class="flex items-center">
+                                        <span class="w-4 text-center text-slate-500 font-bold mr-3">3</span>
+                                        <span class="text-slate-700 dark:text-slate-200 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">NAVER</span>
+                                    </div>
+                                    <span class="text-sm text-slate-400 flex items-center"><i data-lucide="minus" class="w-3 h-3 mr-1"></i>0.0%</span>
+                                    </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex items-center space-x-4">
+                    <button id="theme-toggle" class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-slate-500 dark:text-slate-400">
+                        <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
+                        <i data-lucide="moon" class="w-5 h-5 block dark:hidden"></i>
+                    </button>
+
+                    <div class="relative">
+                        <button id="notification-btn" class="relative p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                            <i data-lucide="bell" class="w-5 h-5 text-slate-500 dark:text-slate-400"></i>
+                            <span class="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border border-white dark:border-slate-950"></span>
+                        </button>
+                        
+                        <div id="notification-modal" class="hidden absolute top-12 right-0 w-80 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm dark:shadow-black/60 z-50 overflow-hidden origin-top-right">
+                            <div class="p-4 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center bg-white dark:bg-slate-900">
+                                <span class="font-bold text-slate-900 dark:text-white text-base">알림</span>
+                                <button class="text-xs text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-colors">모두 읽음</button>
+                            </div>
+                            <ul class="max-h-[300px] overflow-y-auto bg-white dark:bg-slate-900">
+                                <li class="p-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer border-b border-slate-100 dark:border-slate-800/50 transition-colors group">
+                                    <div class="flex items-start space-x-3">
+                                        <div class="bg-blue-500/10 p-2 rounded-full mt-0.5 group-hover:bg-blue-500/20 transition-colors">
+                                            <i data-lucide="file-text" class="w-4 h-4 text-blue-600 dark:text-blue-400"></i>
+                                        </div>
+                                        <div>
+                                            <p class="text-base text-slate-800 dark:text-slate-200 font-semibold">새로운 AI 리포트 도착</p>
+                                            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 leading-snug">회원님의 12월 포트폴리오 분석이 완료되었습니다.</p>
+                                            <span class="text-[10px] text-slate-400 mt-2 block">10분 전</span>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="p-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer border-b border-slate-100 dark:border-slate-800/50 transition-colors group">
+                                    <div class="flex items-start space-x-3">
+                                        <div class="bg-emerald-500/10 p-2 rounded-full mt-0.5 group-hover:bg-emerald-500/20 transition-colors">
+                                            <i data-lucide="trending-up" class="w-4 h-4 text-emerald-600 dark:text-emerald-400"></i>
+                                        </div>
+                                        <div>
+                                            <p class="text-base text-slate-800 dark:text-slate-200 font-semibold">목표 수익률 달성!</p>
+                                            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 leading-snug">관심 종목 '안랩'이 목표가 72,000원에 도달했습니다.</p>
+                                            <span class="text-[10px] text-slate-400 mt-2 block">1시간 전</span>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- Profile Dropdown -->
+                    <div class="relative">
+                        <div id="profile-btn" class="w-8 h-8 rounded-full bg-gradient-to-r from-blue-400 to-cyan-400 border-2 border-slate-200 dark:border-slate-800 cursor-pointer hover:ring-2 hover:ring-blue-500 transition-all"></div>
+                        <!-- Profile Menu -->
+                        <div id="profile-dropdown" class="hidden absolute top-12 right-0 w-48 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm dark:shadow-black/60 z-50 overflow-hidden origin-top-right animate-fade-in">
+                            <div class="p-4 border-b border-slate-100 dark:border-slate-800">
+                                <p class="text-xl font-bold text-slate-900 dark:text-white mb-1">김철수 님</p>
+                                <p class="text-xs text-slate-500 dark:text-slate-400">user@example.com</p>
+                            </div>
+                            <ul class="py-1">
+                                <li>
+                                    <a href="#" class="block p-4 text-base text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                                        내 정보 수정
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="block p-4 text-base text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                                        설정
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="block p-4 text-base text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors">
+                                        로그아웃
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Hero Section (Default Collapsed) -->
+            <section id="hero-section" class="relative w-full transition-all duration-700 ease-[cubic-bezier(0.25,0.1,0.25,1)] border-b border-slate-200 dark:border-slate-800 overflow-hidden h-[140px] lg:h-[120px]">
+                <div class="absolute inset-0 bg-[#f3f6fb] dark:bg-slate-900 transition-colors duration-300 -z-10">
+                    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-100/50 via-[#f3f6fb] to-[#f3f6fb] dark:from-blue-900/40 dark:via-slate-950 dark:to-slate-950"></div>
+                </div>
+                <button id="hero-toggle-btn" class="absolute top-4 right-4 min-[431px]:right-6 lg:right-10 z-30 flex items-center space-x-2 bg-white/80 dark:bg-slate-800/80 backdrop-blur hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs px-3 py-1.5 rounded-full border border-slate-200 dark:border-slate-600 transition-all shadow-sm">
+                    <span id="hero-btn-text">자산 큐브 보기</span>
+                    <i data-lucide="chevron-down" id="hero-btn-icon" class="w-3.5 h-3.5"></i>
+                </button>
+                <div id="hero-expanded" class="absolute inset-0 transition-opacity duration-500 opacity-0 pointer-events-none">
+                    <spline-viewer url="https://prod.spline.design/7Ffx6egDLV36c2Tj/scene.splinecode" class="w-full h-full"></spline-viewer>
+                    <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                        <div class="text-center z-10">
+                             <h1 class="text-4xl lg:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-white via-blue-100 to-sky-200 mb-6 drop-shadow-[0_0_15px_rgba(59,130,246,0.6)] tracking-tight">Your Wealth Dimension</h1>
+                            <p class="text-white text-base lg:text-lg font-medium tracking-wide bg-white/30 dark:bg-slate-900/30 backdrop-blur-md px-4 py-1 rounded-full inline-block border border-white/20">다각도로 분석하는 자산의 흐름</p>
+                        </div>
+                    </div>
+                </div>
+                <div id="hero-collapsed" class="absolute inset-0 transition-opacity duration-500 opacity-100 z-20">
+                    <div class="md:hidden h-full relative">
+                        <!-- 상단 아이콘 영역: 절대 위치 top-4 left-6 -->
+                        <div class="absolute top-4 left-6 flex items-center h-[30px]">
+                             <div class="flex items-center bg-blue-100 dark:bg-blue-900/30 px-3 py-1 rounded-full border border-blue-200/50 dark:border-blue-800/30">
+                                <i data-lucide="shield-check" class="text-blue-500 dark:text-blue-400 mr-1.5 w-3.5 h-3.5"></i>
+                                <span class="text-blue-600 dark:text-blue-400 font-semibold text-xs">안전</span>
+                            </div>
+                        </div>
+                        
+                        <!-- 하단 정보 영역: 절대 위치 bottom-6(24px) left-6 right-6 -->
+                        <div class="absolute bottom-6 left-6 right-6 flex flex-row items-center w-full">
+                            <div class="flex flex-col">
+                                <span class="text-xs text-slate-500 dark:text-slate-400 whitespace-nowrap">총 자산 (Total Assets)</span>
+                                <span class="text-xl min-[431px]:text-2xl font-bold text-slate-900 dark:text-white tabular-nums whitespace-nowrap">₩ 128,450,000</span>
+                            </div>
+                            <div class="h-8 w-px bg-slate-200 dark:bg-slate-700 mx-6"></div>
+                            <div class="flex flex-col items-start">
+                                <span class="text-xs text-slate-500 dark:text-slate-400 whitespace-nowrap">오늘의 수익 (Today)</span>
+                                <span class="text-xl min-[431px]:text-2xl font-bold text-emerald-500 dark:text-emerald-400 flex items-center tabular-nums whitespace-nowrap">
+                                    + ₩ 1,240,000 <i data-lucide="trending-up" class="ml-1 w-4 h-4 min-[431px]:w-5 min-[431px]:h-5"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="hidden md:flex absolute bottom-0 left-0 right-0 p-6 lg:px-10 justify-between items-end">
+                        <div class="flex items-center space-x-6">
+                            <div class="flex flex-col">
+                                <span class="text-[10px] sm:text-xs text-slate-500 dark:text-slate-400 whitespace-nowrap">총 자산 (Total Assets)</span>
+                                <span class="text-lg sm:text-2xl font-bold text-slate-900 dark:text-white tabular-nums whitespace-nowrap">₩ 128,450,000</span>
+                            </div>
+                            <div class="h-8 w-px bg-slate-300 dark:bg-slate-700"></div>
+                            <div class="flex flex-col">
+                                <span class="text-[10px] sm:text-xs text-slate-500 dark:text-slate-400 whitespace-nowrap">오늘의 수익 (Today)</span>
+                                <span class="text-lg sm:text-2xl font-bold text-emerald-500 dark:text-emerald-400 flex items-center tabular-nums whitespace-nowrap">
+                                    + ₩ 1,240,000 <i data-lucide="trending-up" class="ml-1 w-3.5 h-3.5 sm:w-4 sm:h-4"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="flex flex-col justify-end h-[48px]">
+                             <div class="text-slate-600 dark:text-slate-400 text-base flex items-center bg-blue-100 dark:bg-blue-900/30 px-3 py-1 rounded-full border border-blue-200/50 dark:border-blue-800/30">
+                                <i data-lucide="shield-check" class="text-blue-500 dark:text-blue-400 mr-2 w-5 h-5"></i>
+                                <span class="text-blue-600 dark:text-blue-400 font-semibold whitespace-nowrap">안전</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2. Dashboard Grid -->
+            <div class="dashboard-container flex flex-col px-4 py-6 min-[431px]:p-6 lg:p-10 gap-6 xl:gap-10 max-w-7xl mx-auto">
+                
+                <!-- Quick Stats (Initially Hidden) -->
+                <div id="quick-stats" class="grid grid-cols-1 md:grid-cols-3 gap-6 fade-enter" style="display: none; opacity: 0; transform: translateY(10px);">
+                    <div class="bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl backdrop-blur-sm shadow-lg shadow-slate-200/50 dark:shadow-none transition-all group relative overflow-hidden h-full flex flex-col justify-between hover:border-[#2563EB]">
+                        <div class="flex justify-between items-start mb-2 relative z-10">
+                            <span class="text-slate-500 dark:text-slate-400 text-base">총 자산</span>
+                            <img src="img/maininfo_01.png" 
+                                 alt="3D Wallet" 
+                                 class="w-14 h-14 -mt-2 -mr-2 object-contain drop-shadow-md animate-float transition-transform group-hover:scale-110">
+                        </div>
+                        <div class="text-2xl font-bold text-slate-900 dark:text-white mb-1 tabular-nums relative z-10">₩ 128,450,000</div>
+                        <div class="flex flex-wrap items-center gap-2 relative z-10">
+                            <div class="text-xs text-emerald-500 dark:text-emerald-400 flex items-center font-medium tabular-nums">+12.5%</div>
+                            <span class="text-xs text-slate-400 dark:text-slate-500 tabular-nums">(오늘 +₩ 1,240,000)</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl backdrop-blur-sm shadow-lg shadow-slate-200/50 dark:shadow-none transition-all group relative overflow-hidden h-full flex flex-col justify-between hover:border-[#2563EB]">
+                        <div class="flex justify-between items-start mb-2 relative z-10">
+                            <span class="text-slate-500 dark:text-slate-400 text-base">AI 보안 점수</span>
+                            <img src="img/maininfo_02.png" 
+                                 alt="3D Shield" 
+                                 class="w-12 h-12 -mt-1 -mr-1 object-contain drop-shadow-md animate-float transition-transform group-hover:scale-110"
+                                 style="animation-delay: 1s;">
+                        </div>
+                        <div class="text-2xl font-bold text-slate-900 dark:text-white mb-1 tabular-nums relative z-10">94 <span class="text-sm font-normal text-slate-400 dark:text-slate-500">/ 100</span></div>
+                        <div class="text-xs text-blue-500 dark:text-blue-400 relative z-10">모든 계좌가 안전하게 보호 중입니다.</div>
+                    </div>
+
+                    <div class="bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl backdrop-blur-sm shadow-lg shadow-slate-200/50 dark:shadow-none transition-all group relative overflow-hidden h-full flex flex-col justify-between hover:border-[#2563EB]">
+                        <div class="flex justify-between items-start mb-2 relative z-10">
+                            <span class="text-slate-500 dark:text-slate-400 text-base">월간 배당금</span>
+                            <img src="img/maininfo_03.png" 
+                                 alt="3D Card" 
+                                 class="w-14 h-14 -mt-2 -mr-2 object-contain drop-shadow-md animate-float transition-transform group-hover:scale-110"
+                                 style="animation-delay: 2s;">
+                        </div>
+                        <div class="text-2xl font-bold text-slate-900 dark:text-white mb-1 tabular-nums relative z-10">₩ 325,000</div>
+                        <div id="dividend-date" class="text-xs text-slate-500 dark:text-slate-400 relative z-10">다음 입금 예정일: -</div>
+                    </div>
+                </div>
+
+                <!-- Charts Row -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 xl:gap-10">
+                    <!-- Portfolio Chart Card -->
+                    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-lg shadow-slate-200/50 dark:shadow-none relative transition-colors duration-300 flex flex-col h-full">
+                        <div class="flex justify-between items-start mb-5">
+                            <div>
+                                <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-1">자산 포트폴리오</h3>
+                                <p class="text-base text-slate-500 dark:text-slate-400">내 자산의 분산 투자 비율</p>
+                            </div>
+                            <button class="text-sm font-normal text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors mt-0.5">
+                                전체 보기
+                            </button>
+                        </div>
+                        
+                        <div class="flex-1 flex flex-col justify-center gap-4">
+                            <!-- [수정] translate-y-1 (4px) 추가하여 모바일에서 차트 위치 하향 조정, 데스크탑(lg)은 0으로 원복 -->
+                            <div class="relative h-48 lg:h-56 w-full flex justify-center items-center translate-y-1 lg:translate-y-0">
+                                <canvas id="portfolioChart" class="relative z-10"></canvas>
+                                <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-0">
+                                    <span class="text-3xl font-bold text-slate-900 dark:text-white tabular-nums">55%</span>
+                                    <span class="text-xs text-blue-500 dark:text-blue-400 font-medium">주식 비중</span>
+                                </div>
+                            </div>
+                            <!-- [수정] -translate-y-1 (4px) 추가하여 모바일에서 범례 위치 상향 조정, 데스크탑(lg)은 0으로 원복 -->
+                            <div class="flex justify-center items-center space-x-4 mt-5 -translate-y-1 lg:translate-y-0">
+                                <div class="flex items-center"><span class="w-3 h-3 rounded-full bg-blue-500 mr-2"></span><span class="text-sm text-slate-500 dark:text-slate-400">주식</span></div>
+                                <div class="flex items-center"><span class="w-3 h-3 rounded-full bg-purple-500 mr-2"></span><span class="text-sm text-slate-500 dark:text-slate-400">채권</span></div>
+                                <div class="flex items-center"><span class="w-3 h-3 rounded-full bg-emerald-500 mr-2"></span><span class="text-sm text-slate-500 dark:text-slate-400">현금</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Expense Chart Card -->
+                    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-lg shadow-slate-200/50 dark:shadow-none transition-colors duration-300 flex flex-col h-full">
+                        <div class="flex justify-between items-start mb-6">
+                            <div>
+                                <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-1">월별 지출 추이</h3>
+                                <p class="text-base text-slate-500 dark:text-slate-400">최근 소비 패턴 분석</p>
+                            </div>
+                            <button class="text-sm font-normal text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors whitespace-nowrap mt-0.5">
+                                전체 보기
+                            </button>
+                        </div>
+                        
+                        <div class="flex-1 flex flex-col justify-center gap-4">
+                             <div class="h-56 w-full flex items-center justify-center"><canvas id="expenseChart"></canvas></div>
+                             <div class="p-3 bg-slate-100 dark:bg-slate-800/50 rounded-lg flex items-start space-x-3 transition-colors">
+                                <div class="p-1.5 bg-emerald-500/20 rounded-md mt-0.5"><i data-lucide="trending-up" class="w-3.5 h-3.5 text-emerald-500 dark:text-emerald-400"></i></div>
+                                <div>
+                                    <p class="text-sm text-slate-700 dark:text-slate-300 mb-1">지난달 대비 지출이 <span class="text-emerald-600 dark:text-emerald-400 font-bold tabular-nums">12% 감소</span>했습니다.</p>
+                                    <p class="text-xs text-slate-500">매우 훌륭한 소비 습관입니다!</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recommendations -->
+                <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-lg shadow-slate-200/50 dark:shadow-none transition-colors duration-300">
+                    <div class="flex justify-between items-start mb-6">
+                        <div>
+                            <h3 class="text-xl font-bold text-slate-900 dark:text-white flex items-center">
+                                <i data-lucide="bot" class="mr-2 text-purple-500 dark:text-purple-400 w-5 h-5"></i>
+                                AI 보안 테마 추천
+                            </h3>
+                            <p class="text-base text-slate-500 dark:text-slate-400 mt-1">회원님의 투자 성향과 매칭되는 오늘의 추천 종목</p>
+                        </div>
+                        <button class="text-sm font-normal text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors whitespace-nowrap mt-0.5">
+                            전체 보기
+                        </button>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="bg-slate-50 dark:bg-slate-800/30 p-4 rounded-xl cursor-pointer transition-all flex flex-col justify-between">
+                            <div>
+                                <div class="flex justify-between items-start mb-3">
+                                    <div class="flex items-center space-x-3">
+                                        <!-- [수정] Img -> img -->
+                                        <img src="img/stock_01.png" alt="CyberOne" class="w-12 h-12 rounded-full shadow-sm border border-slate-200 dark:border-slate-700 object-cover">
+                                        <div>
+                                            <h4 class="font-bold text-slate-900 dark:text-white text-base">사이버원</h4>
+                                            <span class="text-xs text-slate-500 tabular-nums">356890</span>
+                                        </div>
+                                    </div>
+                                    <span class="text-xs font-bold px-2 py-1 rounded bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">Low Risk</span>
+                                </div>
+                                <div class="mb-3 pl-1 border-l-2 border-purple-500/30">
+                                    <p class="text-sm text-slate-500 dark:text-slate-400 line-clamp-2">
+                                        <span class="text-purple-600 dark:text-purple-400 font-semibold">AI 분석:</span> 최근 공공기관 수주 증가 및 외국인 3일 연속 순매수 포착.
+                                    </p>
+                                </div>
+                            </div>
+                            <!-- [수정] items-center -> items-end 로 변경하여 해시태그 칩을 수익률 수치와 하단 정렬 -->
+                            <div class="flex justify-between items-end border-t border-slate-200 dark:border-slate-700/50 pt-3">
+                                <div>
+                                    <span class="text-xs text-slate-500 block mb-1">AI 예측 수익률</span>
+                                    <span class="text-xl font-bold text-emerald-600 dark:text-emerald-400 tabular-nums">+12.4%</span>
+                                </div>
+                                <div class="text-right">
+                                    <span class="text-xs text-purple-600 dark:text-purple-400 bg-purple-500/10 px-2 py-1 rounded-full border border-purple-500/20">#보안관제</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-slate-50 dark:bg-slate-800/30 p-4 rounded-xl cursor-pointer transition-all flex flex-col justify-between">
+                            <div>
+                                <div class="flex justify-between items-start mb-3">
+                                    <div class="flex items-center space-x-3">
+                                        <!-- [수정] Img -> img -->
+                                        <img src="img/stock_02.png" alt="AhnLab" class="w-12 h-12 rounded-full shadow-sm border border-slate-200 dark:border-slate-700 object-cover">
+                                        <div>
+                                            <h4 class="font-bold text-slate-900 dark:text-white text-base">안랩</h4>
+                                            <span class="text-xs text-slate-500 tabular-nums">053800</span>
+                                        </div>
+                                    </div>
+                                    <span class="text-xs font-bold px-2 py-1 rounded bg-orange-500/10 text-orange-600 dark:text-orange-400">Mid Risk</span>
+                                </div>
+                                <div class="mb-3 pl-1 border-l-2 border-purple-500/30">
+                                    <p class="text-sm text-slate-500 dark:text-slate-400 line-clamp-2">
+                                        <span class="text-purple-600 dark:text-purple-400 font-semibold">AI 분석:</span> 모바일 보안 시장 점유율 확대, 기술적 골든크로스 근접.
+                                    </p>
+                                </div>
+                            </div>
+                            <!-- [수정] items-center -> items-end 로 변경 -->
+                            <div class="flex justify-between items-end border-t border-slate-200 dark:border-slate-700/50 pt-3">
+                                <div>
+                                    <span class="text-xs text-slate-500 block mb-1">AI 예측 수익률</span>
+                                    <span class="text-xl font-bold text-emerald-600 dark:text-emerald-400 tabular-nums">+8.1%</span>
+                                </div>
+                                <div class="text-right">
+                                    <span class="text-xs text-purple-600 dark:text-purple-400 bg-purple-500/10 px-2 py-1 rounded-full border border-purple-500/20">#백신/보안</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-slate-50 dark:bg-slate-800/30 p-4 rounded-xl cursor-pointer transition-all flex flex-col justify-between">
+                            <div>
+                                <div class="flex justify-between items-start mb-3">
+                                    <div class="flex items-center space-x-3">
+                                        <!-- [수정] Img -> img -->
+                                        <img src="img/stock_03.png" alt="Genians" class="w-12 h-12 rounded-full shadow-sm border border-slate-200 dark:border-slate-700 object-cover">
+                                        <div>
+                                            <h4 class="font-bold text-slate-900 dark:text-white text-base">지니언스</h4>
+                                            <span class="text-xs text-slate-500 tabular-nums">263860</span>
+                                        </div>
+                                    </div>
+                                    <span class="text-xs font-bold px-2 py-1 rounded bg-red-500/10 text-red-600 dark:text-red-400">High Risk</span>
+                                </div>
+                                <div class="mb-3 pl-1 border-l-2 border-purple-500/30">
+                                    <p class="text-sm text-slate-500 dark:text-slate-400 line-clamp-2">
+                                        <span class="text-purple-600 dark:text-purple-400 font-semibold">AI 분석:</span> EDR 솔루션 매출 급증 예상이나 단기 과매수 구간 진입.
+                                    </p>
+                                </div>
+                            </div>
+                            <!-- [수정] items-center -> items-end 로 변경 -->
+                            <div class="flex justify-between items-end border-t border-slate-200 dark:border-slate-700/50 pt-3">
+                                <div>
+                                    <span class="text-xs text-slate-500 block mb-1">AI 예측 수익률</span>
+                                    <span class="text-xl font-bold text-emerald-600 dark:text-emerald-400 tabular-nums">+15.2%</span>
+                                </div>
+                                <div class="text-right">
+                                    <span class="text-xs text-purple-600 dark:text-purple-400 bg-purple-500/10 px-2 py-1 rounded-full border border-purple-500/20">#네트워크</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Transactions -->
+                <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-lg shadow-slate-200/50 dark:shadow-none overflow-hidden transition-colors duration-300">
+                    <div class="p-6 pb-0 md:pb-6 md:border-b border-b-0 border-slate-200 dark:border-slate-800 flex justify-between items-center">
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-white flex items-center">
+                            <i data-lucide="list" class="mr-2 text-blue-500 dark:text-blue-400 w-5 h-5"></i>
+                            최근 거래 내역
+                        </h3>
+                        <button class="text-sm font-normal text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">
+                            전체 보기
+                        </button>
+                    </div>
+                    
+                    <div class="hidden md:block overflow-x-auto">
+                        <table class="w-full text-sm text-left">
+                            <thead class="bg-slate-50 dark:bg-slate-800/50 text-slate-500 dark:text-slate-400 font-medium text-base">
+                                <tr>
+                                    <th class="px-6 py-4 whitespace-nowrap">거래 일시</th>
+                                    <th class="px-6 py-4 whitespace-nowrap">종류</th>
+                                    <th class="px-6 py-4 whitespace-nowrap">종목/내용</th>
+                                    <th class="px-6 py-4 text-right whitespace-nowrap">금액</th>
+                                    <th class="px-6 py-4 text-center whitespace-nowrap">상태</th>
+                                </tr>
+                            </thead>
+                            <tbody id="transaction-list" class="divide-y divide-slate-100 dark:divide-slate-800"></tbody>
+                        </table>
+                    </div>
+
+                    <div class="md:hidden px-6 pb-6 pt-6 space-y-4" id="transaction-list-mobile"></div>
+                </div>
+
+            </div>
+        </main>
+        
+        <!-- Interactive AI Chat Bot with FAB -->
+        <button id="chat-fab" class="fixed bottom-6 right-6 w-14 h-14 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full shadow-md shadow-blue-500/10 flex items-center justify-center text-white hover:scale-105 transition-transform z-50 group animate-bounce-slow">
+            <i data-lucide="message-square-more" class="w-6 h-6"></i>
+            <span class="absolute right-full mr-3 bg-slate-900 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">AI 상담 시작</span>
+        </button>
+
+        <div id="chat-window" class="fixed inset-0 m-auto md:inset-auto md:bottom-24 md:right-6 w-[90%] max-w-sm md:w-96 h-[500px] bg-white dark:bg-slate-900 rounded-2xl shadow-sm dark:shadow-black/80 border border-slate-200 dark:border-slate-800 z-50 hidden flex flex-col overflow-hidden animate-slide-up">
+            <div class="p-4 bg-slate-50 dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 flex justify-between items-start">
+                <div class="flex items-center space-x-3">
+                    <div class="w-12 h-12 bg-gradient-to-tr from-blue-500 to-purple-500 rounded-full flex items-center justify-center">
+                        <i data-lucide="bot" class="text-white w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-base text-slate-900 dark:text-white">AI 자산 비서</h4>
+                        <span class="text-xs text-emerald-500 flex items-center"><span class="w-1.5 h-1.5 bg-emerald-500 rounded-full mr-1"></span>온라인</span>
+                    </div>
+                </div>
+                <button id="close-chat" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 mt-1">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <div id="chat-messages" class="flex-1 overflow-y-auto p-4 space-y-4 bg-white dark:bg-slate-900">
+                <!-- Initial Greeting -->
+                <div class="flex items-start space-x-2">
+                    <div class="w-10 h-10 bg-slate-200 dark:bg-slate-700 rounded-full flex items-center justify-center flex-shrink-0">
+                        <i data-lucide="bot" class="w-5 h-5 text-slate-500 dark:text-slate-400"></i>
+                    </div>
+                    <div class="chat-bubble chat-ai">
+                        안녕하세요! 회원님의 포트폴리오 분석을 도와드릴까요? 궁금한 점을 물어보세요. 😊
+                    </div>
+                </div>
+            </div>
+            <div class="p-3 bg-slate-50 dark:bg-slate-800 border-t border-slate-200 dark:border-slate-700">
+                <div class="flex space-x-2">
+                    <input id="chat-input" type="text" placeholder="메시지를 입력하세요..." class="flex-1 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white text-base rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" onkeypress="if(event.key === 'Enter') sendMessage()">
+                    <button onclick="sendMessage()" class="bg-blue-600 hover:bg-blue-500 text-white rounded-lg px-3 py-2 transition-colors">
+                        <i data-lucide="send" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Script Area -->
+    <script>
+        lucide.createIcons();
+
+        function getRelativeDate(offsetDays, setHours, setMinutes) {
+            const date = new Date();
+            date.setDate(date.getDate() - offsetDays);
+            if(setHours !== undefined) date.setHours(setHours);
+            if(setMinutes !== undefined) date.setMinutes(setMinutes);
+            
+            const yyyy = date.getFullYear();
+            const mm = String(date.getMonth() + 1).padStart(2, '0');
+            const dd = String(date.getDate()).padStart(2, '0');
+            const hh = String(date.getHours()).padStart(2, '0');
+            const min = String(date.getMinutes()).padStart(2, '0');
+            
+            return `${yyyy}-${mm}-${dd} ${hh}:${min}`;
+        }
+
+        const transactionList = document.getElementById('transaction-list');
+        const transactions = [
+            { 
+                date: getRelativeDate(0, 14, 30), 
+                type: '매수', 
+                typeClass: 'text-red-500 bg-red-100 dark:bg-red-500/10', 
+                title: '안랩 (053800)', 
+                amount: '₩ 1,250,000',
+                icon: 'trending-up', 
+                iconBg: 'bg-red-100 dark:bg-red-500/20 text-red-500' 
+            },
+            { 
+                date: getRelativeDate(1, 9, 15), 
+                type: '매도', 
+                typeClass: 'text-blue-500 bg-blue-100 dark:bg-blue-500/10', 
+                title: '삼성전자 (005930)', 
+                amount: '₩ 4,500,000',
+                icon: 'trending-down',
+                iconBg: 'bg-blue-100 dark:bg-blue-500/20 text-blue-500'
+            },
+            { 
+                date: getRelativeDate(2, 18, 20), 
+                type: '배당', 
+                typeClass: 'text-purple-600 bg-purple-100 dark:bg-purple-500/10', 
+                title: 'Apple Inc (AAPL)', 
+                amount: '$ 12.50',
+                icon: 'coins',
+                iconBg: 'bg-purple-100 dark:bg-purple-500/20 text-purple-500'
+            },
+            { 
+                date: getRelativeDate(5, 9, 0), 
+                type: '입금', 
+                typeClass: 'text-emerald-600 bg-emerald-100 dark:bg-emerald-500/10', 
+                title: '월 급여 이체', 
+                amount: '₩ 3,500,000',
+                icon: 'wallet',
+                iconBg: 'bg-emerald-100 dark:bg-emerald-500/20 text-emerald-500'
+            },
+        ];
+
+        // 1. 데스크탑 테이블 렌더링
+        if(transactionList) {
+            transactionList.innerHTML = transactions.map(t => `
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+                    <td class="px-6 py-4 text-slate-600 dark:text-slate-400 text-base tabular-nums whitespace-nowrap">${t.date}</td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="px-2 py-1 rounded text-xs font-bold ${t.typeClass}">${t.type}</span>
+                    </td>
+                    <td class="px-6 py-4 font-medium text-base text-slate-900 dark:text-white whitespace-nowrap">${t.title}</td>
+                    <td class="px-6 py-4 text-right font-bold text-base text-slate-900 dark:text-white tabular-nums whitespace-nowrap">${t.amount}</td>
+                    <td class="px-6 py-4 text-center whitespace-nowrap">
+                        <span class="flex items-center justify-center text-sm text-emerald-500 dark:text-emerald-400 font-bold">
+                            <i data-lucide="check-circle-2" class="w-3.5 h-3.5 mr-1"></i> 완료
+                        </span>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // 2. 모바일 리스트 렌더링
+        const transactionListMobile = document.getElementById('transaction-list-mobile');
+        if(transactionListMobile) {
+            transactionListMobile.innerHTML = transactions.map(t => `
+                <div class="flex flex-col p-4 bg-slate-50 dark:bg-slate-800/30 rounded-2xl">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="text-sm text-slate-500 dark:text-slate-400">${t.date}</span>
+                        <span class="px-2 py-1 rounded text-xs font-bold ${t.typeClass}">${t.type}</span>
+                    </div>
+                    <div class="flex justify-between items-start">
+                        <span class="font-bold text-slate-900 dark:text-white text-base">${t.title}</span>
+                        <div class="text-right">
+                            <span class="block font-bold text-slate-900 dark:text-white text-base tabular-nums">${t.amount}</span>
+                            <span class="flex items-center justify-end text-sm text-emerald-500 dark:text-emerald-400 font-bold mt-3"><i data-lucide="check-circle-2" class="w-3 h-3 mr-1"></i> 완료</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        // 아이콘 렌더링
+        lucide.createIcons();
+
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const htmlElement = document.documentElement;
+        
+        function updateChartTheme(isDark) {
+            const textColor = isDark ? '#94a3b8' : '#64748b'; 
+            const gridColor = isDark ? '#334155' : '#e2e8f0'; 
+            
+            if (window.expenseChartInstance) {
+                window.expenseChartInstance.options.scales.x.ticks.color = textColor;
+                window.expenseChartInstance.options.scales.y.ticks.color = textColor;
+                window.expenseChartInstance.options.scales.y.grid.color = gridColor;
+                window.expenseChartInstance.update();
+            }
+            if (window.portfolioChartInstance) {
+                window.portfolioChartInstance.data.datasets[0].borderColor = isDark ? '#1e293b' : '#ffffff';
+                window.portfolioChartInstance.update();
+            }
+        }
+
+        themeToggleBtn.addEventListener('click', () => {
+            if (htmlElement.classList.contains('dark')) {
+                htmlElement.classList.remove('dark');
+                updateChartTheme(false);
+            } else {
+                htmlElement.classList.add('dark');
+                updateChartTheme(true);
+            }
+        });
+
+        // Mobile Menu Logic
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenuContainer = document.getElementById('mobile-menu-container');
+        const mobileMenuClose = document.getElementById('mobile-menu-close');
+        const mobileMenuBackdrop = document.getElementById('mobile-menu-backdrop');
+
+        function toggleMobileMenu() {
+            if (mobileMenuContainer.classList.contains('hidden')) {
+                mobileMenuContainer.classList.remove('hidden');
+            } else {
+                mobileMenuContainer.classList.add('hidden');
+            }
+        }
+
+        if (mobileMenuBtn) {
+            mobileMenuBtn.addEventListener('click', toggleMobileMenu);
+        }
+        if (mobileMenuClose) {
+            mobileMenuClose.addEventListener('click', toggleMobileMenu);
+        }
+        if (mobileMenuBackdrop) {
+            mobileMenuBackdrop.addEventListener('click', toggleMobileMenu);
+        }
+
+        // Search Dropdown Logic
+        const desktopSearchInput = document.getElementById('desktop-search-input');
+        const desktopSearchDropdown = document.getElementById('desktop-search-dropdown');
+        const desktopSearchContainer = document.getElementById('desktop-search-container');
+
+        const mobileSearchInput = document.getElementById('mobile-search-input');
+        const mobileSearchDropdown = document.getElementById('mobile-search-dropdown');
+        const mobileSearchContainer = document.getElementById('mobile-search-container');
+
+        // Toggle logic for desktop
+        if(desktopSearchInput && desktopSearchDropdown) {
+            desktopSearchInput.addEventListener('focus', () => {
+                desktopSearchDropdown.classList.remove('hidden');
+                if (!notificationModal.classList.contains('hidden')) {
+                     notificationModal.classList.add('hidden');
+                     notificationModal.classList.remove('modal-enter');
+                     isNotificationOpen = false;
+                }
+            });
+        }
+
+        if(mobileSearchInput && mobileSearchDropdown) {
+            mobileSearchInput.addEventListener('focus', () => {
+                mobileSearchDropdown.classList.remove('hidden');
+            });
+        }
+
+        // Close search dropdowns when clicking outside
+        document.addEventListener('click', (e) => {
+            // Desktop
+            if(desktopSearchContainer && !desktopSearchContainer.contains(e.target)) {
+                desktopSearchDropdown.classList.add('hidden');
+            }
+            // Mobile
+            if(mobileSearchContainer && !mobileSearchContainer.contains(e.target)) {
+                mobileSearchDropdown.classList.add('hidden');
+            }
+        });
+
+
+        // Profile Dropdown Logic
+        const profileBtn = document.getElementById('profile-btn');
+        const profileDropdown = document.getElementById('profile-dropdown');
+        
+        if (profileBtn) {
+            profileBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                
+                if (!notificationModal.classList.contains('hidden')) {
+                     notificationModal.classList.add('hidden');
+                     notificationModal.classList.remove('modal-enter');
+                     isNotificationOpen = false;
+                }
+
+                if (profileDropdown.classList.contains('hidden')) {
+                    profileDropdown.classList.remove('hidden');
+                } else {
+                    profileDropdown.classList.add('hidden');
+                }
+            });
+        }
+
+        document.addEventListener('click', (e) => {
+            if (profileDropdown && !profileDropdown.contains(e.target) && !profileBtn.contains(e.target)) {
+                profileDropdown.classList.add('hidden');
+            }
+        });
+
+        const heroSection = document.getElementById('hero-section');
+        const heroToggleBtn = document.getElementById('hero-toggle-btn');
+        const heroBtnText = document.getElementById('hero-btn-text');
+        const heroBtnIcon = document.getElementById('hero-btn-icon');
+        const heroExpanded = document.getElementById('hero-expanded');
+        const heroCollapsed = document.getElementById('hero-collapsed');
+        const quickStats = document.getElementById('quick-stats');
+        
+        // [수정] 초기 상태를 false(접힘)로 설정
+        let isHeroExpanded = false;
+
+        // [수정] 높이 계산 로직을 함수로 분리하여 재사용
+        function updateHeroHeight() {
+            if (isHeroExpanded) {
+                heroSection.style.height = '400px';
+            } else {
+                // 모바일(<768px)에서는 140px, 데스크탑에서는 120px
+                if (window.innerWidth < 768) {
+                    // [수정] 180px -> 140px로 변경하여 상하단 요소 간격을 약 20px로 맞춤 (계산: 140 - 46(상단) - 70(하단) ≈ 24px 여유)
+                    heroSection.style.height = '140px'; 
+                } else {
+                    heroSection.style.height = '120px';
+                }
+            }
+        }
+
+        heroToggleBtn.addEventListener('click', () => {
+            isHeroExpanded = !isHeroExpanded;
+            if (isHeroExpanded) {
+                // heroSection.style.height = '400px'; // updateHeroHeight()에서 처리
+                heroBtnText.innerText = '간략히 보기';
+                heroBtnIcon.innerHTML = '<polyline points="18 15 12 9 6 15"></polyline>'; 
+                heroExpanded.style.opacity = '1'; heroExpanded.style.pointerEvents = 'auto';
+                heroCollapsed.style.opacity = '0'; heroCollapsed.style.pointerEvents = 'none';
+                quickStats.style.display = 'grid'; 
+                // 애니메이션 효과 제거로 바로 보이게 처리
+                quickStats.style.opacity = '1'; 
+                quickStats.style.transform = 'translateY(0)'; 
+            } else {
+                // [기존 코드 제거 및 updateHeroHeight()로 대체]
+                
+                // [수정] '자산 큐브 보기'로 문구 변경
+                heroBtnText.innerText = '자산 큐브 보기';
+                heroBtnIcon.innerHTML = '<polyline points="6 9 12 15 18 9"></polyline>';
+                heroExpanded.style.opacity = '0'; heroExpanded.style.pointerEvents = 'none';
+                heroCollapsed.style.opacity = '1'; heroCollapsed.style.pointerEvents = 'auto';
+                quickStats.style.opacity = '0'; quickStats.style.transform = 'translateY(10px)';
+                setTimeout(() => { quickStats.style.display = 'none'; }, 300);
+            }
+            
+            // [추가] 상태 변경 시 높이 업데이트 호출
+            updateHeroHeight();
+            lucide.createIcons();
+        });
+
+        // [추가] 브라우저 창 크기 변경(리사이즈) 시에도 높이 자동 조절
+        window.addEventListener('resize', () => {
+            // 성능 최적화를 위해 requestAnimationFrame 사용 가능하나, 간단하게 직접 호출
+            updateHeroHeight();
+        });
+
+        const notificationBtn = document.getElementById('notification-btn');
+        const notificationModal = document.getElementById('notification-modal');
+        let isNotificationOpen = false;
+        notificationBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            
+            if (profileDropdown && !profileDropdown.classList.contains('hidden')) {
+                profileDropdown.classList.add('hidden');
+            }
+
+            // [수정됨] 알림 클릭시 검색 드롭다운 닫기
+            if(desktopSearchDropdown) desktopSearchDropdown.classList.add('hidden');
+            if(mobileSearchDropdown) mobileSearchDropdown.classList.add('hidden');
+
+            isNotificationOpen = !isNotificationOpen;
+            if (isNotificationOpen) {
+                notificationModal.classList.remove('hidden');
+                notificationModal.classList.add('modal-enter');
+            } else {
+                notificationModal.classList.add('hidden');
+                notificationModal.classList.remove('modal-enter');
+            }
+        });
+        document.addEventListener('click', (e) => {
+            if (isNotificationOpen && !notificationModal.contains(e.target) && !notificationBtn.contains(e.target)) {
+                isNotificationOpen = false;
+                notificationModal.classList.add('hidden');
+                notificationModal.classList.remove('modal-enter');
+            }
+        });
+
+        // --- CHATBOT LOGIC ---
+        const chatFab = document.getElementById('chat-fab');
+        const chatWindow = document.getElementById('chat-window');
+        const closeChat = document.getElementById('close-chat');
+        const chatInput = document.getElementById('chat-input');
+        const chatMessages = document.getElementById('chat-messages');
+
+        chatFab.addEventListener('click', () => {
+            chatWindow.classList.remove('hidden');
+            chatFab.classList.add('hidden'); 
+            chatInput.focus();
+        });
+        closeChat.addEventListener('click', () => {
+            chatWindow.classList.add('hidden');
+            chatFab.classList.remove('hidden');
+        });
+
+        function sendMessage() {
+            const text = chatInput.value.trim();
+            if (!text) return;
+            addMessage(text, 'user');
+            chatInput.value = '';
+            setTimeout(() => { showTypingIndicator(); }, 500);
+            setTimeout(() => {
+                removeTypingIndicator();
+                const aiResponses = [
+                    "네, 회원님의 포트폴리오를 분석 중입니다...",
+                    "현재 '안랩' 종목의 변동성이 큽니다. 주의 깊게 지켜보세요.",
+                    "지난달 대비 소비가 12% 감소하셨네요! 훌륭합니다.",
+                    "보안 테마주 관련 리포트를 메일로 보내드릴까요?",
+                    "더 궁금한 점이 있으신가요?"
+                ];
+                const randomResponse = aiResponses[Math.floor(Math.random() * aiResponses.length)];
+                addMessage(randomResponse, 'ai');
+            }, 1500);
+        }
+
+        function addMessage(text, sender) {
+            const div = document.createElement('div');
+            div.className = `flex items-start space-x-2 ${sender === 'user' ? 'justify-end' : ''}`;
+            let content = '';
+            if (sender === 'ai') {
+                content = `<div class="w-10 h-10 bg-slate-200 dark:bg-slate-700 rounded-full flex items-center justify-center flex-shrink-0"><i data-lucide="bot" class="w-5 h-5 text-slate-500 dark:text-slate-400"></i></div><div class="chat-bubble chat-ai slide-up">${text}</div>`;
+            } else {
+                content = `<div class="chat-bubble chat-user slide-up">${text}</div>`;
+            }
+            div.innerHTML = content;
+            chatMessages.appendChild(div);
+            lucide.createIcons();
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function showTypingIndicator() {
+            const div = document.createElement('div');
+            div.id = 'typing-indicator';
+            div.className = 'flex items-start space-x-2';
+            div.innerHTML = `<div class="w-10 h-10 bg-slate-200 dark:bg-slate-700 rounded-full flex items-center justify-center flex-shrink-0"><i data-lucide="bot" class="w-5 h-5 text-slate-500 dark:text-slate-400"></i></div><div class="chat-bubble chat-ai flex space-x-1 items-center"><div class="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce"></div><div class="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" style="animation-delay: 0.1s"></div><div class="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" style="animation-delay: 0.2s"></div></div>`;
+            chatMessages.appendChild(div);
+            lucide.createIcons();
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function removeTypingIndicator() {
+            const indicator = document.getElementById('typing-indicator');
+            if (indicator) indicator.remove();
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const isDark = htmlElement.classList.contains('dark');
+            const textColor = isDark ? '#94a3b8' : '#64748b';
+            const gridColor = isDark ? '#334155' : '#e2e8f0';
+
+            const ctxPortfolio = document.getElementById('portfolioChart').getContext('2d');
+            window.portfolioChartInstance = new Chart(ctxPortfolio, {
+                type: 'doughnut',
+                data: {
+                    labels: ['주식 (Stocks)', '채권 (Bonds)', '현금 (Cash)'],
+                    datasets: [{
+                        data: [55, 30, 15],
+                        backgroundColor: ['#3b82f6', '#a855f7', '#10b981'],
+                        borderColor: isDark ? '#1e293b' : '#ffffff',
+                        borderWidth: 2,
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '75%',
+                    plugins: {
+                        legend: {
+                            display: false,
+                        },
+                        tooltip: {
+                            backgroundColor: '#1e293b',
+                            titleColor: '#fff',
+                            bodyColor: '#fff',
+                            borderColor: '#334155',
+                            borderWidth: 1,
+                            padding: 14,
+                            cornerRadius: 8
+                        }
+                    }
+                }
+            });
+
+            const ctxExpense = document.getElementById('expenseChart').getContext('2d');
+            window.expenseChartInstance = new Chart(ctxExpense, {
+                type: 'bar',
+                data: {
+                    labels: ['1월', '2월', '3월', '4월', '5월', '6월'],
+                    datasets: [{ label: '지출 금액', data: [240, 190, 300, 250, 210, 180], backgroundColor: '#3b82f6', borderRadius: 4, barThickness: 20 }]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    scales: { y: { beginAtZero: true, grid: { color: gridColor, drawBorder: false }, ticks: { color: textColor, font: { size: 11 } }, border: { display: false } }, x: { grid: { display: false }, ticks: { color: textColor, font: { size: 11 } }, border: { display: false } } },
+                    plugins: { legend: { display: false }, tooltip: { backgroundColor: '#1e293b', titleColor: '#fff', bodyColor: '#fff', borderColor: '#334155', borderWidth: 1, cornerRadius: 8, padding: 14 } }
+                }
+            });
+
+            // [추가] 다음 배당금 예정일 자동 계산 (오늘 + 2주)
+            const dividendDateElem = document.getElementById('dividend-date');
+            if (dividendDateElem) {
+                const now = new Date();
+                const twoWeeksLater = new Date(now.setDate(now.getDate() + 14));
+                const mm = twoWeeksLater.getMonth() + 1;
+                const dd = twoWeeksLater.getDate();
+                dividendDateElem.textContent = `다음 입금 예정일: ${mm}월 ${dd}일`;
+            }
+        });
+    </script>
+</body>
+</html>
