@@ -445,14 +445,14 @@
                     <spline-viewer url="https://prod.spline.design/7Ffx6egDLV36c2Tj/scene.splinecode" class="w-full h-full"></spline-viewer>
                     <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
                         <div class="text-center z-10">
-                             <h1 class="text-4xl lg:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-white via-blue-100 to-sky-200 mb-6 drop-shadow-[0_0_15px_rgba(59,130,246,0.6)] tracking-tight">Your Wealth Dimension</h1>
+                             <!-- [수정] 모바일 폰트 크기 text-[32px], 하단 여백 mb-5(20px)로 변경 -->
+                             <h1 class="text-[32px] lg:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-white via-blue-100 to-sky-200 mb-5 drop-shadow-[0_0_15px_rgba(59,130,246,0.6)] tracking-tight">Your Wealth Dimension</h1>
                             <p class="text-white text-base lg:text-lg font-medium tracking-wide bg-white/30 dark:bg-slate-900/30 backdrop-blur-md px-4 py-1 rounded-full inline-block border border-white/20">다각도로 분석하는 자산의 흐름</p>
                         </div>
                     </div>
                 </div>
                 <div id="hero-collapsed" class="absolute inset-0 transition-opacity duration-500 opacity-0 pointer-events-none z-20">
-                    <div class="md:hidden h-full relative">
-                        <!-- 상단 아이콘 영역: 절대 위치 top-4 left-6 -->
+                    <!-- [수정] flex-col 방식 대신 relative + absolute positioning으로 변경하여 하단 여백(bottom-6=24px)을 웹과 동일하게 강제 고정 -->
                         <div class="absolute top-4 left-6 flex items-center h-[30px]">
                              <div class="flex items-center bg-blue-100 dark:bg-blue-900/30 px-3 py-1 rounded-full border border-blue-200/50 dark:border-blue-800/30">
                                 <i data-lucide="shield-check" class="text-blue-500 dark:text-blue-400 mr-1.5 w-3.5 h-3.5"></i>
