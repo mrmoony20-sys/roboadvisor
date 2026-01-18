@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Chat Component (Open)</title>
+    <title>AI Chat Component (Dark)</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -70,11 +70,11 @@
         }
     </style>
 </head>
-<body class="bg-slate-100 dark:bg-slate-900 min-h-screen relative flex items-center justify-center font-sans">
+<body class="bg-slate-100 dark:bg-slate-900 min-h-screen relative flex items-center justify-center font-sans transition-colors duration-300">
 
     <!-- 데모용 배경 텍스트 -->
     <div class="text-center text-slate-400">
-        <p>AI 상담 채팅창이<br>기본적으로 열려있습니다.</p>
+        <p>AI 상담 채팅창 (다크 모드)<br>기본적으로 열려있으며 대화 내용이 적용되었습니다.</p>
     </div>
 
     <!-- ========================================== -->
@@ -88,11 +88,11 @@
         <span class="absolute right-full mr-3 bg-slate-900 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">AI 상담 시작</span>
     </button>
 
-    <!-- 2. Chat Window Container - Initially Visible (Removed 'hidden') -->
-    <div id="chat-window" class="fixed inset-0 m-auto md:inset-auto md:bottom-24 md:right-6 w-[90%] max-w-sm md:w-96 h-[500px] bg-white dark:bg-slate-900 rounded-2xl shadow-2xl dark:shadow-black/80 border border-slate-200 dark:border-slate-800 z-50 flex flex-col overflow-hidden animate-slide-up">
+    <!-- 2. Chat Window Container - Initially Visible -->
+    <div id="chat-window" class="fixed inset-0 m-auto md:inset-auto md:bottom-24 md:right-6 w-[90%] max-w-sm md:w-96 h-[500px] bg-white dark:bg-slate-900 rounded-2xl shadow-2xl dark:shadow-black/80 border border-slate-200 dark:border-slate-800 z-50 flex flex-col overflow-hidden animate-slide-up transition-colors duration-300">
         
         <!-- Header -->
-        <div class="p-4 bg-slate-50 dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 flex justify-between items-start">
+        <div class="p-4 bg-slate-50 dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 flex justify-between items-start transition-colors duration-300">
             <div class="flex items-center space-x-3">
                 <div class="w-10 h-10 bg-gradient-to-tr from-blue-500 to-purple-500 rounded-full flex items-center justify-center shadow-md">
                     <i data-lucide="bot" class="text-white w-6 h-6"></i>
@@ -110,20 +110,37 @@
         </div>
 
         <!-- Messages Area -->
-        <div id="chat-messages" class="flex-1 overflow-y-auto p-4 space-y-4 bg-white dark:bg-slate-900 scroll-smooth">
+        <div id="chat-messages" class="flex-1 overflow-y-auto p-4 space-y-4 bg-white dark:bg-slate-900 scroll-smooth transition-colors duration-300">
             <!-- Initial Greeting -->
             <div class="flex items-start space-x-2">
-                <div class="w-8 h-8 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center flex-shrink-0 border border-slate-200 dark:border-slate-700">
+                <div class="w-8 h-8 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center flex-shrink-0 border border-slate-200 dark:border-slate-700 transition-colors duration-300">
                     <i data-lucide="bot" class="w-4 h-4 text-slate-500 dark:text-slate-400"></i>
                 </div>
                 <div class="chat-bubble chat-ai shadow-sm">
                     안녕하세요! 회원님의 포트폴리오 분석을 도와드릴까요? 궁금한 점을 물어보세요. 😊
                 </div>
             </div>
+
+            <!-- User Message (Added) -->
+            <div class="flex items-start space-x-2 justify-end">
+                <div class="chat-bubble chat-user shadow-sm">
+                    내 포트폴리오 상태 어때?
+                </div>
+            </div>
+
+            <!-- AI Response (Added) -->
+            <div class="flex items-start space-x-2">
+                <div class="w-8 h-8 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center flex-shrink-0 border border-slate-200 dark:border-slate-700 transition-colors duration-300">
+                    <i data-lucide="bot" class="w-4 h-4 text-slate-500 dark:text-slate-400"></i>
+                </div>
+                <div class="chat-bubble chat-ai shadow-sm">
+                    현재 회원님의 포트폴리오(주식 55%, 채권 30%, 현금 15%)는 안정적인 수익률을 보이고 있습니다. 다만, 최근 변동성이 큰 기술주 비중이 다소 높으니 주의가 필요합니다.
+                </div>
+            </div>
         </div>
 
         <!-- Input Area -->
-        <div class="p-3 bg-slate-50 dark:bg-slate-800 border-t border-slate-200 dark:border-slate-700">
+        <div class="p-3 bg-slate-50 dark:bg-slate-800 border-t border-slate-200 dark:border-slate-700 transition-colors duration-300">
             <div class="flex space-x-2">
                 <input id="chat-input" type="text" placeholder="메시지를 입력하세요..." class="flex-1 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white text-sm rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all placeholder:text-slate-400" autocomplete="off">
                 <button onclick="sendMessage()" class="bg-blue-600 hover:bg-blue-500 text-white rounded-xl px-3 py-2 transition-colors shadow-sm active:scale-95">
@@ -145,12 +162,16 @@
         const chatInput = document.getElementById('chat-input');
         const chatMessages = document.getElementById('chat-messages');
 
+        // 초기 로드시 스크롤 맨 아래로 이동
+        window.onload = function() {
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        };
+
         // 채팅창 열기/닫기 로직
         chatFab.addEventListener('click', () => {
             chatWindow.classList.remove('hidden');
             chatFab.classList.add('hidden'); 
             chatInput.focus();
-            // 스크롤을 맨 아래로 이동
             setTimeout(() => {
                 chatMessages.scrollTop = chatMessages.scrollHeight;
             }, 10);
@@ -209,7 +230,7 @@
             if (sender === 'ai') {
                 // AI 프로필 아이콘 + 말풍선
                 content = `
-                    <div class="w-8 h-8 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center flex-shrink-0 border border-slate-200 dark:border-slate-700">
+                    <div class="w-8 h-8 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center flex-shrink-0 border border-slate-200 dark:border-slate-700 transition-colors duration-300">
                         <i data-lucide="bot" class="w-4 h-4 text-slate-500 dark:text-slate-400"></i>
                     </div>
                     <div class="chat-bubble chat-ai shadow-sm">${text}</div>
@@ -233,7 +254,7 @@
             div.id = 'typing-indicator';
             div.className = 'flex items-start space-x-2 animate-slide-up';
             div.innerHTML = `
-                <div class="w-8 h-8 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center flex-shrink-0 border border-slate-200 dark:border-slate-700">
+                <div class="w-8 h-8 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center flex-shrink-0 border border-slate-200 dark:border-slate-700 transition-colors duration-300">
                     <i data-lucide="bot" class="w-4 h-4 text-slate-500 dark:text-slate-400"></i>
                 </div>
                 <div class="chat-bubble chat-ai flex space-x-1 items-center shadow-sm">
