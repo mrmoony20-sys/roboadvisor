@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI RoboAdvisor Dashboard</title>
     
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -51,13 +50,10 @@
         }
     </script>
 
-    <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 
-    <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
 
-    <!-- Spline Viewer -->
     <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.59/build/spline-viewer.js"></script>
 
     <style>
@@ -128,7 +124,6 @@
 
     <div class="flex min-h-screen relative">
         
-        <!-- Mobile Menu Drawer -->
         <div id="mobile-menu-container" class="fixed inset-0 z-[60] hidden">
             <div id="mobile-menu-backdrop" class="absolute inset-0 mobile-menu-overlay transition-opacity"></div>
             <div class="absolute inset-y-0 left-0 w-64 bg-white dark:bg-slate-900 shadow-2xl animate-slide-in-left flex flex-col">
@@ -145,17 +140,14 @@
                 </div>
 
                 <div class="p-4 relative">
-                    <!-- [Mobile] Search Input Container -->
                     <div id="mobile-search-container" class="relative">
                         <div class="flex items-center bg-slate-100 dark:bg-slate-800 rounded-xl px-3 py-2 border border-slate-200 dark:border-slate-700">
                             <i data-lucide="search" class="text-slate-400 mr-2 w-4 h-4"></i>
                             <input id="mobile-search-input" type="text" placeholder="종목, 리포트 검색..." class="bg-transparent border-none outline-none text-base w-full placeholder-slate-500 text-slate-900 dark:text-slate-100"/>
                         </div>
                         
-                        <!-- [Mobile] Search Dropdown -->
                         <div id="mobile-search-dropdown" class="absolute top-full left-0 w-full mt-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl shadow-sm dark:shadow-black/60 z-20 hidden overflow-hidden">
                             <div class="p-4">
-                                <!-- Recent History -->
                                 <div class="flex justify-between items-center mb-3">
                                     <span class="text-sm font-bold text-slate-500 dark:text-slate-400">최근 검색어</span>
                                     <button class="text-xs text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-colors">지우기</button>
@@ -165,32 +157,7 @@
                                         <span>삼성전자</span>
                                         <button class="ml-1.5 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 focus:outline-none"><i data-lucide="x" class="w-3 h-3"></i></button>
                                     </div>
-                                    <div class="inline-flex items-center px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-full text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors cursor-pointer group">
-                                        <span>2차전지</span>
-                                        <button class="ml-1.5 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 focus:outline-none"><i data-lucide="x" class="w-3 h-3"></i></button>
-                                    </div>
                                 </div>
-                                
-                                <!-- Popular Stocks -->
-                                <div class="mb-3 border-t border-slate-100 dark:border-slate-800 pt-4 mt-2">
-                                    <span class="text-sm font-bold text-slate-500 dark:text-slate-400 block">실시간 인기 종목 🔥</span>
-                                </div>
-                                <ul class="space-y-1">
-                                    <li class="flex items-center justify-between text-base cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50 p-2 rounded-lg group">
-                                        <div class="flex items-center">
-                                            <span class="w-4 text-center text-blue-500 font-bold mr-3">1</span>
-                                            <span class="text-slate-700 dark:text-slate-200 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">POSCO홀딩스</span>
-                                        </div>
-                                        <span class="text-sm text-red-500 flex items-center"><i data-lucide="trending-up" class="w-3 h-3 mr-1"></i>2.5%</span>
-                                    </li>
-                                    <li class="flex items-center justify-between text-base cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50 p-2 rounded-lg group">
-                                        <div class="flex items-center">
-                                            <span class="w-4 text-center text-slate-500 font-bold mr-3">2</span>
-                                            <span class="text-slate-700 dark:text-slate-200 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">에코프로비엠</span>
-                                        </div>
-                                        <span class="text-sm text-blue-500 flex items-center"><i data-lucide="trending-down" class="w-3 h-3 mr-1"></i>-1.2%</span>
-                                    </li>
-                                </ul>
                             </div>
                         </div>
                     </div>
@@ -218,26 +185,13 @@
                         <span class="font-medium">설정</span>
                     </a>
                 </nav>
-
-                <div class="p-4 border-t border-slate-100 dark:border-slate-800">
-                    <div class="bg-gradient-to-br from-slate-100 to-white dark:from-slate-800 dark:to-slate-900 rounded-xl p-3 border border-slate-200 dark:border-slate-700">
-                        <div class="flex items-center space-x-2 text-blue-600 dark:text-blue-400 mb-1">
-                            <i data-lucide="zap" class="w-4 h-4"></i>
-                            <span class="text-sm font-bold">AI Pro 업그레이드</span>
-                        </div>
-                        <button class="w-full mt-2 py-1.5 text-sm font-bold bg-blue-600 text-white rounded-lg">지금 시작하기</button>
-                    </div>
-                </div>
             </div>
         </div>
 
-        <!-- Desktop Sidebar -->
         <aside class="hidden lg:flex flex-col w-64 border-r border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/50 backdrop-blur-xl fixed h-full z-50 transition-colors duration-300">
             <div class="p-6 flex items-center space-x-3">
                 <div class="w-[48px] h-[48px] relative flex items-center justify-center">
-                    <img src="img/main_robot.gif" 
-                         alt="3D Logo" 
-                         class="w-full h-full object-contain drop-shadow-lg hover:scale-110 transition-transform">
+                    <img src="img/main_robot.gif" alt="3D Logo" class="w-full h-full object-contain drop-shadow-lg hover:scale-110 transition-transform">
                 </div>
                 <span class="text-2xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-br from-[#2563EB] to-sky-400 dark:text-white">RoboAdvisor</span>
             </div>
@@ -277,10 +231,8 @@
             </div>
         </aside>
 
-        <!-- Main Content -->
         <main class="flex-1 lg:ml-64 relative pb-20">
             
-            <!-- Top Header -->
             <header class="sticky top-0 z-40 flex items-center justify-between px-4 min-[431px]:px-6 lg:px-10 py-4 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800/50 transition-colors duration-300">
                 <div class="flex items-center lg:hidden">
                     <button id="mobile-menu-btn" class="text-slate-500 dark:text-slate-400 mr-4 cursor-pointer focus:outline-none">
@@ -289,22 +241,14 @@
                     <span class="font-bold text-transparent bg-clip-text bg-gradient-to-br from-[#2563EB] to-sky-400 dark:text-white">RoboAdvisor</span>
                 </div>
                 
-                <!-- [Desktop] Search Container (Relative for Dropdown) -->
                 <div id="desktop-search-container" class="hidden lg:flex items-center relative w-96">
                     <div class="flex items-center bg-slate-100 dark:bg-slate-800/50 rounded-full px-4 py-2 border border-slate-200 dark:border-slate-700 w-full transition-colors">
                         <i data-lucide="search" class="text-slate-400 mr-2 w-4 h-4"></i>
-                        <input 
-                            id="desktop-search-input"
-                            type="text" 
-                            placeholder="종목, 리포트 검색..." 
-                            class="bg-transparent border-none outline-none text-base w-full placeholder-slate-500 text-slate-900 dark:text-slate-100"
-                        />
+                        <input id="desktop-search-input" type="text" placeholder="종목, 리포트 검색..." class="bg-transparent border-none outline-none text-base w-full placeholder-slate-500 text-slate-900 dark:text-slate-100"/>
                     </div>
 
-                    <!-- [Desktop] Search Dropdown -->
                     <div id="desktop-search-dropdown" class="absolute top-full left-0 w-full mt-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm dark:shadow-black/60 z-50 hidden overflow-hidden animate-fade-in">
                         <div class="p-4">
-                            <!-- Recent History -->
                             <div class="flex justify-between items-center mb-3">
                                 <span class="text-sm font-bold text-slate-500 dark:text-slate-400">최근 검색어</span>
                                 <button class="text-xs text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-colors">지우기</button>
@@ -318,39 +262,14 @@
                                     <span>2차전지</span>
                                     <button class="ml-1.5 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 focus:outline-none"><i data-lucide="x" class="w-3 h-3"></i></button>
                                 </div>
-                                <div class="inline-flex items-center px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-full text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors cursor-pointer group">
-                                    <span>고배당주</span>
-                                    <button class="ml-1.5 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 focus:outline-none"><i data-lucide="x" class="w-3 h-3"></i></button>
-                                </div>
                             </div>
                             
-                            <!-- Popular Stocks -->
                             <div class="mb-3 border-t border-slate-100 dark:border-slate-800 pt-4 mt-2">
                                 <span class="text-sm font-bold text-slate-500 dark:text-slate-400 block">실시간 인기 종목 🔥</span>
                             </div>
-                            <ul class="space-y-1">
-                                <li class="flex items-center justify-between text-base cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50 p-2 rounded-lg group">
-                                    <div class="flex items-center">
-                                        <span class="w-4 text-center text-blue-500 font-bold mr-3">1</span>
-                                        <span class="text-slate-700 dark:text-slate-200 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">POSCO홀딩스</span>
-                                    </div>
-                                    <span class="text-sm text-red-500 flex items-center"><i data-lucide="trending-up" class="w-3 h-3 mr-1"></i>2.5%</span>
-                                </li>
-                                <li class="flex items-center justify-between text-base cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50 p-2 rounded-lg group">
-                                    <div class="flex items-center">
-                                        <span class="w-4 text-center text-slate-500 font-bold mr-3">2</span>
-                                        <span class="text-slate-700 dark:text-slate-200 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">에코프로비엠</span>
-                                    </div>
-                                    <span class="text-sm text-blue-500 flex items-center"><i data-lucide="trending-down" class="w-3 h-3 mr-1"></i>-1.2%</span>
-                                </li>
-                                 <li class="flex items-center justify-between text-base cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50 p-2 rounded-lg group">
-                                    <div class="flex items-center">
-                                        <span class="w-4 text-center text-slate-500 font-bold mr-3">3</span>
-                                        <span class="text-slate-700 dark:text-slate-200 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">NAVER</span>
-                                    </div>
-                                    <span class="text-sm text-slate-400 flex items-center"><i data-lucide="minus" class="w-3 h-3 mr-1"></i>0.0%</span>
-                                    </li>
-                            </ul>
+                            
+                            <ul id="stock-list" class="space-y-1">
+                                </ul>
                         </div>
                     </div>
                 </div>
@@ -367,7 +286,6 @@
                             <span class="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border border-white dark:border-slate-950"></span>
                         </button>
                         
-                        <!-- [수정] 모바일에서 프로필 드롭다운과 위치를 맞추기 위해 -right-12 (-48px) 적용, 데스크탑(md 이상)에서는 right-0 복귀 -->
                         <div id="notification-modal" class="hidden absolute top-12 -right-12 md:right-0 w-80 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm dark:shadow-black/60 z-50 overflow-hidden origin-top-right">
                             <div class="p-4 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center bg-white dark:bg-slate-900">
                                 <span class="font-bold text-slate-900 dark:text-white text-base">알림</span>
@@ -402,10 +320,8 @@
                         </div>
                     </div>
                     
-                    <!-- Profile Dropdown -->
                     <div class="relative">
                         <div id="profile-btn" class="w-8 h-8 rounded-full bg-gradient-to-r from-blue-400 to-cyan-400 border-2 border-slate-200 dark:border-slate-800 cursor-pointer hover:ring-2 hover:ring-blue-500 transition-all"></div>
-                        <!-- Profile Menu -->
                         <div id="profile-dropdown" class="hidden absolute top-12 right-0 w-48 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm dark:shadow-black/60 z-50 overflow-hidden origin-top-right animate-fade-in">
                             <div class="p-4 border-b border-slate-100 dark:border-slate-800">
                                 <p class="text-xl font-bold text-slate-900 dark:text-white mb-1">김철수 님</p>
@@ -433,7 +349,6 @@
                 </div>
             </header>
 
-            <!-- Hero Section -->
             <section id="hero-section" class="relative w-full transition-all duration-700 ease-[cubic-bezier(0.25,0.1,0.25,1)] border-b border-slate-200 dark:border-slate-800 overflow-hidden h-[400px]">
                 <div class="absolute inset-0 bg-[#f3f6fb] dark:bg-slate-900 transition-colors duration-300 -z-10">
                     <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-100/50 via-[#f3f6fb] to-[#f3f6fb] dark:from-blue-900/40 dark:via-slate-950 dark:to-slate-950"></div>
@@ -453,7 +368,6 @@
                 </div>
                 <div id="hero-collapsed" class="absolute inset-0 transition-opacity duration-500 opacity-0 pointer-events-none z-20">
                     <div class="md:hidden h-full relative">
-                        <!-- 상단 아이콘 영역: 절대 위치 top-4 left-6 -->
                         <div class="absolute top-4 left-6 flex items-center h-[30px]">
                              <div class="flex items-center bg-blue-100 dark:bg-blue-900/30 px-3 py-1 rounded-full border border-blue-200/50 dark:border-blue-800/30">
                                 <i data-lucide="shield-check" class="text-blue-500 dark:text-blue-400 mr-1.5 w-3.5 h-3.5"></i>
@@ -461,7 +375,6 @@
                             </div>
                         </div>
                         
-                        <!-- 하단 정보 영역: 절대 위치 bottom-6(24px) left-6 right-6 -->
                         <div class="absolute bottom-6 left-6 right-6 flex flex-row items-center w-full">
                             <div class="flex flex-col">
                                 <span class="text-xs text-slate-500 dark:text-slate-400 whitespace-nowrap">총 자산 (Total Assets)</span>
@@ -501,17 +414,13 @@
                 </div>
             </section>
 
-            <!-- 2. Dashboard Grid -->
             <div class="dashboard-container flex flex-col px-4 py-6 min-[431px]:p-6 lg:p-10 gap-6 xl:gap-10 max-w-7xl mx-auto">
                 
-                <!-- Quick Stats -->
                 <div id="quick-stats" class="grid grid-cols-1 md:grid-cols-3 gap-6 fade-enter">
                     <div class="bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl backdrop-blur-sm shadow-lg shadow-slate-200/50 dark:shadow-none transition-all group relative overflow-hidden h-full flex flex-col justify-between hover:border-[#2563EB]">
                         <div class="flex justify-between items-start mb-2 relative z-10">
                             <span class="text-slate-500 dark:text-slate-400 text-base">총 자산</span>
-                            <img src="img/maininfo_01.png" 
-                                 alt="3D Wallet" 
-                                 class="w-14 h-14 -mt-2 -mr-2 object-contain drop-shadow-md animate-float transition-transform group-hover:scale-110">
+                            <img src="img/maininfo_01.png" alt="3D Wallet" class="w-14 h-14 -mt-2 -mr-2 object-contain drop-shadow-md animate-float transition-transform group-hover:scale-110">
                         </div>
                         <div class="text-2xl font-bold text-slate-900 dark:text-white mb-1 tabular-nums relative z-10">₩ 128,450,000</div>
                         <div class="flex flex-wrap items-center gap-2 relative z-10">
@@ -523,10 +432,7 @@
                     <div class="bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl backdrop-blur-sm shadow-lg shadow-slate-200/50 dark:shadow-none transition-all group relative overflow-hidden h-full flex flex-col justify-between hover:border-[#2563EB]">
                         <div class="flex justify-between items-start mb-2 relative z-10">
                             <span class="text-slate-500 dark:text-slate-400 text-base">AI 보안 점수</span>
-                            <img src="img/maininfo_02.png" 
-                                 alt="3D Shield" 
-                                 class="w-12 h-12 -mt-1 -mr-1 object-contain drop-shadow-md animate-float transition-transform group-hover:scale-110"
-                                 style="animation-delay: 1s;">
+                            <img src="img/maininfo_02.png" alt="3D Shield" class="w-12 h-12 -mt-1 -mr-1 object-contain drop-shadow-md animate-float transition-transform group-hover:scale-110" style="animation-delay: 1s;">
                         </div>
                         <div class="text-2xl font-bold text-slate-900 dark:text-white mb-1 tabular-nums relative z-10">94 <span class="text-sm font-normal text-slate-400 dark:text-slate-500">/ 100</span></div>
                         <div class="text-xs text-blue-500 dark:text-blue-400 relative z-10">모든 계좌가 안전하게 보호 중입니다.</div>
@@ -535,19 +441,14 @@
                     <div class="bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl backdrop-blur-sm shadow-lg shadow-slate-200/50 dark:shadow-none transition-all group relative overflow-hidden h-full flex flex-col justify-between hover:border-[#2563EB]">
                         <div class="flex justify-between items-start mb-2 relative z-10">
                             <span class="text-slate-500 dark:text-slate-400 text-base">월간 배당금</span>
-                            <img src="img/maininfo_03.png" 
-                                 alt="3D Card" 
-                                 class="w-14 h-14 -mt-2 -mr-2 object-contain drop-shadow-md animate-float transition-transform group-hover:scale-110"
-                                 style="animation-delay: 2s;">
+                            <img src="img/maininfo_03.png" alt="3D Card" class="w-14 h-14 -mt-2 -mr-2 object-contain drop-shadow-md animate-float transition-transform group-hover:scale-110" style="animation-delay: 2s;">
                         </div>
                         <div class="text-2xl font-bold text-slate-900 dark:text-white mb-1 tabular-nums relative z-10">₩ 325,000</div>
                         <div id="dividend-date" class="text-xs text-slate-500 dark:text-slate-400 relative z-10">다음 입금 예정일: -</div>
                     </div>
                 </div>
 
-                <!-- Charts Row -->
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 xl:gap-10">
-                    <!-- Portfolio Chart Card -->
                     <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-lg shadow-slate-200/50 dark:shadow-none relative transition-colors duration-300 flex flex-col h-full">
                         <div class="flex justify-between items-start mb-5">
                             <div>
@@ -560,7 +461,6 @@
                         </div>
                         
                         <div class="flex-1 flex flex-col justify-center gap-4">
-                            <!-- [수정] translate-y-1 (4px) 추가하여 모바일에서 차트 위치 하향 조정, 데스크탑(lg)은 0으로 원복 -->
                             <div class="relative h-48 lg:h-56 w-full flex justify-center items-center translate-y-1 lg:translate-y-0">
                                 <canvas id="portfolioChart" class="relative z-10"></canvas>
                                 <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-0">
@@ -568,7 +468,6 @@
                                     <span class="text-xs text-blue-500 dark:text-blue-400 font-medium">주식 비중</span>
                                 </div>
                             </div>
-                            <!-- [수정] -translate-y-1 (4px) 추가하여 모바일에서 범례 위치 상향 조정, 데스크탑(lg)은 0으로 원복 -->
                             <div class="flex justify-center items-center space-x-4 mt-5 -translate-y-1 lg:translate-y-0">
                                 <div class="flex items-center"><span class="w-3 h-3 rounded-full bg-blue-500 mr-2"></span><span class="text-sm text-slate-500 dark:text-slate-400">주식</span></div>
                                 <div class="flex items-center"><span class="w-3 h-3 rounded-full bg-purple-500 mr-2"></span><span class="text-sm text-slate-500 dark:text-slate-400">채권</span></div>
@@ -577,7 +476,6 @@
                         </div>
                     </div>
                     
-                    <!-- Expense Chart Card -->
                     <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-lg shadow-slate-200/50 dark:shadow-none transition-colors duration-300 flex flex-col h-full">
                         <div class="flex justify-between items-start mb-6">
                             <div>
@@ -602,7 +500,6 @@
                     </div>
                 </div>
 
-                <!-- Recommendations -->
                 <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-lg shadow-slate-200/50 dark:shadow-none transition-colors duration-300">
                     <div class="flex justify-between items-start mb-6">
                         <div>
@@ -617,95 +514,10 @@
                         </button>
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div class="bg-slate-50 dark:bg-slate-800/30 p-4 rounded-xl cursor-pointer transition-all flex flex-col justify-between">
-                            <div>
-                                <div class="flex justify-between items-start mb-3">
-                                    <div class="flex items-center space-x-3">
-                                        <img src="img/stock_01.png" alt="CyberOne" class="w-12 h-12 rounded-full shadow-sm border border-slate-200 dark:border-slate-700 object-cover">
-                                        <div>
-                                            <h4 class="font-bold text-slate-900 dark:text-white text-base">사이버원</h4>
-                                            <span class="text-xs text-slate-500 tabular-nums">356890</span>
-                                        </div>
-                                    </div>
-                                    <span class="text-xs font-bold px-2 py-1 rounded bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">Low Risk</span>
-                                </div>
-                                <div class="mb-3 pl-1 border-l-2 border-purple-500/30">
-                                    <p class="text-sm text-slate-500 dark:text-slate-400 line-clamp-2">
-                                        <span class="text-purple-600 dark:text-purple-400 font-semibold">AI 분석:</span> 최근 공공기관 수주 증가 및 외국인 3일 연속 순매수 포착.
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="flex justify-between items-end border-t border-slate-200 dark:border-slate-700/50 pt-3">
-                                <div>
-                                    <span class="text-xs text-slate-500 block mb-1">AI 예측 수익률</span>
-                                    <span class="text-xl font-bold text-emerald-600 dark:text-emerald-400 tabular-nums">+12.4%</span>
-                                </div>
-                                <div class="text-right">
-                                    <span class="text-xs text-purple-600 dark:text-purple-400 bg-purple-500/10 px-2 py-1 rounded-full border border-purple-500/20">#보안관제</span>
-                                </div>
-                            </div>
+                    <div id="recommendation-list" class="grid grid-cols-1 md:grid-cols-3 gap-4">
                         </div>
-                        <div class="bg-slate-50 dark:bg-slate-800/30 p-4 rounded-xl cursor-pointer transition-all flex flex-col justify-between">
-                            <div>
-                                <div class="flex justify-between items-start mb-3">
-                                    <div class="flex items-center space-x-3">
-                                        <img src="img/stock_02.png" alt="AhnLab" class="w-12 h-12 rounded-full shadow-sm border border-slate-200 dark:border-slate-700 object-cover">
-                                        <div>
-                                            <h4 class="font-bold text-slate-900 dark:text-white text-base">안랩</h4>
-                                            <span class="text-xs text-slate-500 tabular-nums">053800</span>
-                                        </div>
-                                    </div>
-                                    <span class="text-xs font-bold px-2 py-1 rounded bg-orange-500/10 text-orange-600 dark:text-orange-400">Mid Risk</span>
-                                </div>
-                                <div class="mb-3 pl-1 border-l-2 border-purple-500/30">
-                                    <p class="text-sm text-slate-500 dark:text-slate-400 line-clamp-2">
-                                        <span class="text-purple-600 dark:text-purple-400 font-semibold">AI 분석:</span> 모바일 보안 시장 점유율 확대, 기술적 골든크로스 근접.
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="flex justify-between items-end border-t border-slate-200 dark:border-slate-700/50 pt-3">
-                                <div>
-                                    <span class="text-xs text-slate-500 block mb-1">AI 예측 수익률</span>
-                                    <span class="text-xl font-bold text-emerald-600 dark:text-emerald-400 tabular-nums">+8.1%</span>
-                                </div>
-                                <div class="text-right">
-                                    <span class="text-xs text-purple-600 dark:text-purple-400 bg-purple-500/10 px-2 py-1 rounded-full border border-purple-500/20">#백신/보안</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="bg-slate-50 dark:bg-slate-800/30 p-4 rounded-xl cursor-pointer transition-all flex flex-col justify-between">
-                            <div>
-                                <div class="flex justify-between items-start mb-3">
-                                    <div class="flex items-center space-x-3">
-                                        <img src="img/stock_03.png" alt="Genians" class="w-12 h-12 rounded-full shadow-sm border border-slate-200 dark:border-slate-700 object-cover">
-                                        <div>
-                                            <h4 class="font-bold text-slate-900 dark:text-white text-base">지니언스</h4>
-                                            <span class="text-xs text-slate-500 tabular-nums">263860</span>
-                                        </div>
-                                    </div>
-                                    <span class="text-xs font-bold px-2 py-1 rounded bg-red-500/10 text-red-600 dark:text-red-400">High Risk</span>
-                                </div>
-                                <div class="mb-3 pl-1 border-l-2 border-purple-500/30">
-                                    <p class="text-sm text-slate-500 dark:text-slate-400 line-clamp-2">
-                                        <span class="text-purple-600 dark:text-purple-400 font-semibold">AI 분석:</span> EDR 솔루션 매출 급증 예상이나 단기 과매수 구간 진입.
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="flex justify-between items-end border-t border-slate-200 dark:border-slate-700/50 pt-3">
-                                <div>
-                                    <span class="text-xs text-slate-500 block mb-1">AI 예측 수익률</span>
-                                    <span class="text-xl font-bold text-emerald-600 dark:text-emerald-400 tabular-nums">+15.2%</span>
-                                </div>
-                                <div class="text-right">
-                                    <span class="text-xs text-purple-600 dark:text-purple-400 bg-purple-500/10 px-2 py-1 rounded-full border border-purple-500/20">#네트워크</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
 
-                <!-- Recent Transactions -->
                 <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-lg shadow-slate-200/50 dark:shadow-none overflow-hidden transition-colors duration-300">
                     <div class="p-6 pb-0 md:pb-6 md:border-b border-b-0 border-slate-200 dark:border-slate-800 flex justify-between items-center">
                         <h3 class="text-xl font-bold text-slate-900 dark:text-white flex items-center">
@@ -738,7 +550,6 @@
             </div>
         </main>
         
-        <!-- Interactive AI Chat Bot with FAB -->
         <button id="chat-fab" class="fixed bottom-6 right-6 w-14 h-14 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full shadow-md shadow-blue-500/10 flex items-center justify-center text-white hover:scale-105 transition-transform z-50 group animate-bounce-slow">
             <i data-lucide="message-square-more" class="w-6 h-6"></i>
             <span class="absolute right-full mr-3 bg-slate-900 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">AI 상담 시작</span>
@@ -760,7 +571,6 @@
                 </button>
             </div>
             <div id="chat-messages" class="flex-1 overflow-y-auto p-4 space-y-4 bg-white dark:bg-slate-900">
-                <!-- Initial Greeting -->
                 <div class="flex items-start space-x-2">
                     <div class="w-10 h-10 bg-slate-200 dark:bg-slate-700 rounded-full flex items-center justify-center flex-shrink-0">
                         <i data-lucide="bot" class="w-5 h-5 text-slate-500 dark:text-slate-400"></i>
@@ -770,14 +580,12 @@
                     </div>
                 </div>
 
-                <!-- [추가] 사용자 예시 메시지 -->
                 <div class="flex items-start space-x-2 justify-end">
                     <div class="chat-bubble chat-user">
                         내 포트폴리오 상태 어때?
                     </div>
                 </div>
 
-                <!-- [추가] AI 답변 예시 메시지 -->
                 <div class="flex items-start space-x-2">
                     <div class="w-10 h-10 bg-slate-200 dark:bg-slate-700 rounded-full flex items-center justify-center flex-shrink-0">
                         <i data-lucide="bot" class="w-5 h-5 text-slate-500 dark:text-slate-400"></i>
@@ -799,7 +607,6 @@
 
     </div>
 
-    <!-- Script Area -->
     <script>
         lucide.createIcons();
 
@@ -1030,14 +837,11 @@
         const quickStats = document.getElementById('quick-stats');
         let isHeroExpanded = true;
 
-        // [수정] 높이 계산 로직을 함수로 분리하여 재사용
         function updateHeroHeight() {
             if (isHeroExpanded) {
                 heroSection.style.height = '400px';
             } else {
-                // 모바일(<768px)에서는 140px, 데스크탑에서는 120px
                 if (window.innerWidth < 768) {
-                    // [수정] 180px -> 140px로 변경하여 상하단 요소 간격을 약 20px로 맞춤 (계산: 140 - 46(상단) - 70(하단) ≈ 24px 여유)
                     heroSection.style.height = '140px'; 
                 } else {
                     heroSection.style.height = '120px';
@@ -1048,19 +852,14 @@
         heroToggleBtn.addEventListener('click', () => {
             isHeroExpanded = !isHeroExpanded;
             if (isHeroExpanded) {
-                // heroSection.style.height = '400px'; // updateHeroHeight()에서 처리
                 heroBtnText.innerText = '간략히 보기';
                 heroBtnIcon.innerHTML = '<polyline points="18 15 12 9 6 15"></polyline>'; 
                 heroExpanded.style.opacity = '1'; heroExpanded.style.pointerEvents = 'auto';
                 heroCollapsed.style.opacity = '0'; heroCollapsed.style.pointerEvents = 'none';
                 quickStats.style.display = 'grid'; 
-                // 애니메이션 효과 제거로 바로 보이게 처리
                 quickStats.style.opacity = '1'; 
                 quickStats.style.transform = 'translateY(0)'; 
             } else {
-                // [기존 코드 제거 및 updateHeroHeight()로 대체]
-                
-                // [수정] '자산 큐브 보기'로 문구 변경
                 heroBtnText.innerText = '자산 큐브 보기';
                 heroBtnIcon.innerHTML = '<polyline points="6 9 12 15 18 9"></polyline>';
                 heroExpanded.style.opacity = '0'; heroExpanded.style.pointerEvents = 'none';
@@ -1069,14 +868,11 @@
                 setTimeout(() => { quickStats.style.display = 'none'; }, 300);
             }
             
-            // [추가] 상태 변경 시 높이 업데이트 호출
             updateHeroHeight();
             lucide.createIcons();
         });
 
-        // [추가] 브라우저 창 크기 변경(리사이즈) 시에도 높이 자동 조절
         window.addEventListener('resize', () => {
-            // 성능 최적화를 위해 requestAnimationFrame 사용 가능하나, 간단하게 직접 호출
             updateHeroHeight();
         });
 
@@ -1090,7 +886,6 @@
                 profileDropdown.classList.add('hidden');
             }
 
-            // [수정됨] 알림 클릭시 검색 드롭다운 닫기
             if(desktopSearchDropdown) desktopSearchDropdown.classList.add('hidden');
             if(mobileSearchDropdown) mobileSearchDropdown.classList.add('hidden');
 
@@ -1231,7 +1026,6 @@
                 }
             });
 
-            // [추가] 다음 배당금 예정일 자동 계산 (오늘 + 2주)
             const dividendDateElem = document.getElementById('dividend-date');
             if (dividendDateElem) {
                 const now = new Date();
@@ -1241,6 +1035,122 @@
                 dividendDateElem.textContent = `다음 입금 예정일: ${mm}월 ${dd}일`;
             }
         });
+
+        // ==========================================
+        // [포트폴리오 증빙용] 컴포넌트 구조화 스크립트
+        // "반복되는 UI를 데이터 기반의 컴포넌트 함수로 변환하여 렌더링"
+        // ==========================================
+
+        /**
+         * 1. 실시간 인기 종목 컴포넌트 (StockItem Component)
+         */
+        const stockData = [
+            { rank: 1, name: 'POSCO홀딩스', change: '2.5%', type: 'up' },
+            { rank: 2, name: '에코프로비엠', change: '-1.2%', type: 'down' },
+            { rank: 3, name: 'NAVER', change: '0.0%', type: 'flat' }
+        ];
+
+        // StockItem: 데이터를 받아 HTML 문자열을 반환하는 함수형 컴포넌트
+        const StockItem = (stock) => {
+            let colorClass = 'text-slate-400';
+            let icon = 'minus';
+            
+            if (stock.type === 'up') {
+                colorClass = 'text-red-500';
+                icon = 'trending-up';
+            } else if (stock.type === 'down') {
+                colorClass = 'text-blue-500';
+                icon = 'trending-down';
+            }
+
+            return `
+                <li class="flex items-center justify-between text-base cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50 p-2 rounded-lg group transition-colors">
+                    <div class="flex items-center">
+                        <span class="w-4 text-center ${stock.rank <= 3 ? 'text-blue-500 font-bold' : 'text-slate-500'} mr-3">${stock.rank}</span>
+                        <span class="text-slate-700 dark:text-slate-200 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">${stock.name}</span>
+                    </div>
+                    <span class="text-sm ${colorClass} flex items-center">
+                        <i data-lucide="${icon}" class="w-3 h-3 mr-1"></i>${stock.change}
+                    </span>
+                </li>
+            `;
+        };
+
+        // 렌더링 실행
+        const stockListEl = document.getElementById('stock-list');
+        if (stockListEl) {
+            stockListEl.innerHTML = stockData.map(stock => StockItem(stock)).join('');
+        }
+
+
+        /**
+         * 2. 추천 종목 카드 컴포넌트 (RecommendationCard Component)
+         */
+        const recommendationData = [
+            { 
+                name: '사이버원', code: '356890', img: 'img/stock_01.png', 
+                risk: 'Low Risk', riskColor: 'emerald', 
+                analysis: '최근 공공기관 수주 증가 및 외국인 3일 연속 순매수 포착.',
+                returnRate: '+12.4%', tag: '#보안관제', tagColor: 'purple'
+            },
+            { 
+                name: '안랩', code: '053800', img: 'img/stock_02.png', 
+                risk: 'Mid Risk', riskColor: 'orange', 
+                analysis: '모바일 보안 시장 점유율 확대, 기술적 골든크로스 근접.',
+                returnRate: '+8.1%', tag: '#백신/보안', tagColor: 'purple'
+            },
+            { 
+                name: '지니언스', code: '263860', img: 'img/stock_03.png', 
+                risk: 'High Risk', riskColor: 'red', 
+                analysis: 'EDR 솔루션 매출 급증 예상이나 단기 과매수 구간 진입.',
+                returnRate: '+15.2%', tag: '#네트워크', tagColor: 'purple'
+            }
+        ];
+
+        // Card Component: 복잡한 카드 UI를 재사용 가능한 구조로 분리
+        const RecommendationCard = (item) => {
+            // Tailwind 색상 동적 처리를 위한 매핑
+            const riskBg = { emerald: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400', orange: 'bg-orange-500/10 text-orange-600 dark:text-orange-400', red: 'bg-red-500/10 text-red-600 dark:text-red-400' };
+            
+            return `
+                <div class="bg-slate-50 dark:bg-slate-800/30 p-4 rounded-xl cursor-pointer transition-all hover:scale-[1.02] hover:shadow-md flex flex-col justify-between h-full">
+                    <div>
+                        <div class="flex justify-between items-start mb-3">
+                            <div class="flex items-center space-x-3">
+                                <img src="${item.img}" alt="${item.name}" class="w-12 h-12 rounded-full shadow-sm border border-slate-200 dark:border-slate-700 object-cover">
+                                <div>
+                                    <h4 class="font-bold text-slate-900 dark:text-white text-base">${item.name}</h4>
+                                    <span class="text-xs text-slate-500 tabular-nums">${item.code}</span>
+                                </div>
+                            </div>
+                            <span class="text-xs font-bold px-2 py-1 rounded ${riskBg[item.riskColor]}">${item.risk}</span>
+                        </div>
+                        <div class="mb-3 pl-1 border-l-2 border-purple-500/30">
+                            <p class="text-sm text-slate-500 dark:text-slate-400 line-clamp-2">
+                                <span class="text-purple-600 dark:text-purple-400 font-semibold">AI 분석:</span> ${item.analysis}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-end border-t border-slate-200 dark:border-slate-700/50 pt-3 mt-auto">
+                        <div>
+                            <span class="text-xs text-slate-500 block mb-1">AI 예측 수익률</span>
+                            <span class="text-xl font-bold text-emerald-600 dark:text-emerald-400 tabular-nums">${item.returnRate}</span>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-xs text-purple-600 dark:text-purple-400 bg-purple-500/10 px-2 py-1 rounded-full border border-purple-500/20">${item.tag}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        };
+
+        // 렌더링 실행
+        const recommendListEl = document.getElementById('recommendation-list');
+        if (recommendListEl) {
+            recommendListEl.innerHTML = recommendationData.map(item => RecommendationCard(item)).join('');
+            // 동적으로 추가된 아이콘들을 위해 Lucide 다시 실행
+            lucide.createIcons();
+        }
     </script>
 </body>
 </html>
